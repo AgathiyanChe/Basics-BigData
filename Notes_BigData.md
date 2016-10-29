@@ -12,7 +12,7 @@ Remove a fields from HDFS:
 `hdfs dfs -rm -R [-skipTrash]`  
 > :exclamation: Be careful with `-skipTrash` option because it will bypass trash, if enabled, and delete the specified file(s) immediately. This can be useful when it is necessary to delete files from an over-quota directory.
 
-More information about _HDFS*_ click in this [**link**](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html#),  or put `hdfs dfs` in command line.
+More information about HDFS click in this [**link**](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html#),  or put `hdfs dfs` in command line.
 
 Yarn app list:  
 `yarn application -list`   
