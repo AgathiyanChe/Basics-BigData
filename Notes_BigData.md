@@ -5,14 +5,14 @@ This notes try to show the most useful command lines that I use in my daily work
 Show the content of HDFS directory:  
 `hdfs dfs -ls`  
 Upload a file to HDFS:  
-`hdfs dfs -put <localDocumentName>/ <HDFSDocumentName>`  
+`hdfs dfs -put <localDocumentName> <HDFSDocumentName>`  
 Download a file to Local from HDFS:  
 `hdfs dfs -get <HDFS directory>/<HDFS filename>  <Localfilename>`  
 Remove a fields from HDFS:  
 `hdfs dfs -rm -R [-skipTrash]`  
-> :exclamation: We careful with `-skipTrash` option because it will bypass trash, if enabled, and delete the specified file(s) immediately. This can be useful when it is necessary to delete files from an over-quota directory.
+> :exclamation: Be careful with `-skipTrash` option because it will bypass trash, if enabled, and delete the specified file(s) immediately. This can be useful when it is necessary to delete files from an over-quota directory.
 
-More information about HDFS click in this [**link**](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html#),  or put `hdfs dfs` in command line.
+More information about _HDFS*_ click in this [**link**](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html#),  or put `hdfs dfs` in command line.
 
 Yarn app list:  
 `yarn application -list`   
