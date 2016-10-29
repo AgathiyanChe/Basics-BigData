@@ -1,5 +1,5 @@
 # Notes
-This notes try to show the most useful command lines that I use in my daily work with Hadoop environment.
+These notes try to show the most useful command lines that I use in my daily work with Hadoop environment.
 
 ## HDFS and YARN
 Show the content of HDFS directory:  
