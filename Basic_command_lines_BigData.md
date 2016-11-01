@@ -1,6 +1,12 @@
 # Notes
 These notes try to show the most useful command lines that I use in my daily work with Hadoop environment.
 
+**Table of Content**
+
+[HDFS and YARN](#)  
+[Sqoop](#)
+
+
 ## HDFS and YARN
 Show the content of HDFS directory:
 ```
@@ -44,14 +50,20 @@ sqoop list-tables --connect jdbc:mysql://<dataBase> --username <name> --password
 
 Import a database with Sqoop and put in a base directory:
 ```
-sqoop import-all-tables --connect jdbc:mysql://dbhost/<nameOfDirectory> --username <name> --password <password> --warehouse-dir /<nameOfDirectory>
+sqoop import-all-tables \
+--connect jdbc:mysql://dbhost/<nameOfDirectory> --username  <name> --password <password> \
+--warehouse-dir /<nameOfDirectory> \
 ```
 - You can use `--target-dir` to specify a directory.
 - `--target-dir` is incompatible with `--warehouse-dir`
 
 Imcremental import can be used:
 ```
-sqoop import --table <nameTable> --connect jdbc:mysql://dbhost/<database> --username <name> --password <password> --incremental lastmodified --check-column <columnName> --last-value '<timeStampValue>'
+sqoop import --table <nameTable> \
+--connect jdbc:mysql://dbhost/<database> --username <name> --password <password> \
+--incremental lastmodified \
+--check-column <columnName> \
+--last-value '<timeStampValue>' \
 ```
 
 ## Hive and Impala
