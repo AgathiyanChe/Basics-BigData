@@ -3,8 +3,9 @@ These notes try to show the most useful command lines that I use in my daily wor
 
 **Table of Content**
 
-[HDFS and YARN](#hdfs-and-yarn)  
-[Sqoop](#sqoop)
+1. [HDFS and YARN](#hdfs-and-yarn)  
+2. [Sqoop](#sqoop)  
+3. [Hive and Impala](#hive-and-impala)
 
 
 ## HDFS and YARN
@@ -51,19 +52,28 @@ sqoop list-tables --connect jdbc:mysql://<dataBase> --username <name> --password
 Import a database with Sqoop and put in a base directory:
 ```
 sqoop import-all-tables \
---connect jdbc:mysql://dbhost/<nameOfDirectory> --username  <name> --password <password> \
+--connect jdbc:mysql://dbhost/<dataBase> --username  <name> --password <password> \
 --warehouse-dir /<nameOfDirectory> \
 ```
 - You can use `--target-dir` to specify a directory.
 - `--target-dir` is incompatible with `--warehouse-dir`
 
-Imcremental import can be used:
+Incremental import can be used by `lastmodified`:
 ```
 sqoop import --table <nameTable> \
 --connect jdbc:mysql://dbhost/<database> --username <name> --password <password> \
 --incremental lastmodified \
 --check-column <columnName> \
 --last-value '<timeStampValue>' \
+```
+
+or we can use `append` mode:
+```
+sqoop import --table <nameTable> \
+--connect jdbc:mysql://dbhost/<database> --username <name> --password <password> \
+--incremental append \
+--check-column <columnId> \
+--last-value <valueId>
 ```
 
 ## Hive and Impala
