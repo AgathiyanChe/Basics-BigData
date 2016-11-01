@@ -3,8 +3,8 @@ These notes try to show the most useful command lines that I use in my daily wor
 
 **Table of Content**
 
-[HDFS and YARN](#)  
-[Sqoop](#)
+[HDFS and YARN](#hdfs-and-yarn)  
+[Sqoop](#sqoop)
 
 
 ## HDFS and YARN
