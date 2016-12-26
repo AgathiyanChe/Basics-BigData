@@ -108,7 +108,7 @@ beeline
 beeline -u jdbc:hive2://localhost:10000/default -n scott -w password_file
 ```
 Some interesting options:
-* If you have a document with some queries, the `-f` can be used:
+* If you have a document with some queries, the `-f` can be used to run it:
 ```
 beeline -f myFileWithQueries.sql
 ```
