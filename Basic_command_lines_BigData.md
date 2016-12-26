@@ -118,3 +118,34 @@ impala-shell -e 'SELECT * FROM users'
 ```
 
 More information about the command options click in the [link](https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-BeelineCommandOptions)
+
+## DDL
+
+Create a new database:
+```sql
+CREATE DATABASE IF NOT EXISTS exampleTable
+```
+Drop a database:
+```sql
+DROP DATABASE IF EXISTS exampleTable
+```
+Create a table:
+```sql
+CREATE TABLE exampleTable (colname DATATYPE, ...)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY char
+```
+:heavy_exclamation_mark: To show more *Data Definition Language* an example will be used for that:
+```sql
+-- Row: 1,Marc,666666213
+CREATE TABLE people (
+id INT,
+name STRING,
+telephone INT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+```
+The result is:
+| Id             | Name           | Telephone      |
+| :------------- | :------------- | :------------- |
+| 1              | Marc           |  666666213     |
