@@ -119,7 +119,7 @@ impala-shell -e 'SELECT * FROM users'
 
 More information about the command options click in the [link](https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-BeelineCommandOptions)
 
-## DDL
+### DDL
 
 Create a new database:
 ```sql
@@ -146,6 +146,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ',';
 ```
 The result is:
+
 | Id             | Name           | Telephone      |
 | :------------- | :------------- | :------------- |
 | 1              | Marc           |  666666213     |
