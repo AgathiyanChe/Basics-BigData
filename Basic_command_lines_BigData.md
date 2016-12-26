@@ -137,20 +137,14 @@ ROW FORMAT DELIMITED FIELDS TERMINATED BY char
 :heavy_exclamation_mark: To show more *Data Definition Language* an example will be used for that:
 
 ```sql
--- Row: 1,Marc,666666213
-CREATE TABLE people (
-id INT,
-name STRING,
-telephone INT
-)
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ',';
+-- Row: 1,Marc,666666666
+CREATE TABLE people (id INT,name STRING,telephone INT) ROW FORMAT DELIMITEDFIELDS TERMINATED BY ',';
 ```
 The result is:
 
 | Id             | Name           | Telephone      |
 | :------------- | :------------- | :------------- |
-| 1              | Marc           |  666666213     |
+| 1              | Marc           |  666666666     |
 
 If a new table is wanted with the same definition, we can use `LIKE`:
 ```sql
@@ -160,3 +154,9 @@ If a new table is wanted with the same definition, we can use `SELECT` statement
 ```sql
 CREATE TABLE people_otherCountry AS SELECT * FROM people
 ```
+If remove problems will be wanted, the `EXTERNAL` statement can be used:
+```sql
+CREATE EXTERNAL TABLE people (id INT,name STRING,telephone INT) ROW FORMAT DELIMITEDFIELDS TERMINATED BY ',';
+```
+If the user wants to explore the tables in the current database: `SHOW TABLES`. Sometimes users wants to see
+information about tables, users can use `DESCRIBE tableName` or `DESCRIBE FORMATTED tableName`.
