@@ -123,11 +123,11 @@ More information about the command options click in the [link](https://cwiki.apa
 
 Create a new database:
 ```sql
-CREATE DATABASE IF NOT EXISTS exampleTable
+CREATE DATABASE IF NOT EXISTS exampleDatabase
 ```
 Drop a database:
 ```sql
-DROP DATABASE IF EXISTS exampleTable
+DROP DATABASE IF EXISTS exampleDatabase
 ```
 Create a table:
 ```sql
@@ -135,6 +135,7 @@ CREATE TABLE exampleTable (colname DATATYPE, ...)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY char
 ```
 :heavy_exclamation_mark: To show more *Data Definition Language* an example will be used for that:
+
 ```sql
 -- Row: 1,Marc,666666213
 CREATE TABLE people (
@@ -150,3 +151,12 @@ The result is:
 | Id             | Name           | Telephone      |
 | :------------- | :------------- | :------------- |
 | 1              | Marc           |  666666213     |
+
+If a new table is wanted with the same definition, we can use `LIKE`:
+```sql
+CREATE TABLE people_otherCountry LIKE people
+```
+If a new table is wanted with the same definition, we can use `SELECT` statement as well:
+```sql
+CREATE TABLE people_otherCountry AS SELECT * FROM people
+```
