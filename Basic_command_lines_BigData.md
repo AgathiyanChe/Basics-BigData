@@ -77,7 +77,44 @@ sqoop import --table <nameTable> \
 ```
 
 ## Hive and Impala
-Run files with Queries in Impala:
+
+### Impala in Shell
+See all info in Impala Shell with next command:
 ```
-impala-shell -f <fileName>.sql
+impala-shell --help
 ```
+Some interesting commands to begin:
+```bash
+# Start impala-shell
+impala-shell
+# Start impala-shell in a different server
+impala-shell -i myserver.example.com:2100
+```
+Some interesting options:
+* If you have a document with some queries, the `-f` can be used:
+```
+impala-shell -f myFileWithQueries.sql
+```
+* If you want to run queries directly from terminal use `-q`:
+```
+impala-shell -q 'SELECT * FROM users'
+```
+### Hive in Shell
+Some interesting commands to begin:
+```bash
+# Start Hive
+beeline
+# Start beeline in a different server with corresponding name and password
+beeline -u jdbc:hive2://localhost:10000/default -n scott -w password_file
+```
+Some interesting options:
+* If you have a document with some queries, the `-f` can be used:
+```
+beeline -f myFileWithQueries.sql
+```
+* If you want to run queries directly from terminal use `-e`:
+```
+impala-shell -e 'SELECT * FROM users'
+```
+
+More information about the command options click in the [link](https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-BeelineCommandOptions)
