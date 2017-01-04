@@ -125,6 +125,8 @@ Create a new database:
 ```sql
 CREATE DATABASE IF NOT EXISTS exampleDatabase
 ```
+ > A database is simply an HDFS directory containing one or more files. its path is: `/user/hive/warehouse/exampleDatabase.db`
+
 Drop a database:
 ```sql
 DROP DATABASE IF EXISTS exampleDatabase
@@ -134,6 +136,8 @@ Create a table:
 CREATE TABLE exampleTable (colname DATATYPE, ...)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY char
 ```
+ > A table is simply an HDFS directory containing one or more files. its path is: `/user/hive/warehouse/exampleTable`
+
 :heavy_exclamation_mark: To show more *Data Definition Language* an example will be used for that:
 
 ```sql
@@ -154,9 +158,11 @@ If a new table is wanted with the same definition, we can use `SELECT` statement
 ```sql
 CREATE TABLE people_otherCountry AS SELECT * FROM people
 ```
-If remove problems will be wanted, the `EXTERNAL` statement can be used:
+If remove problems will be avoid, the `EXTERNAL` statement can be used:
 ```sql
-CREATE EXTERNAL TABLE people (id INT,name STRING,telephone INT) ROW FORMAT DELIMITEDFIELDS TERMINATED BY ',';
+CREATE EXTERNAL TABLE people (id INT,name STRING,telephone INT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
 ```
+>Remenber to use `Location` when a tables should be created in a specific directory
+
 If the user wants to explore the tables in the current database: `SHOW TABLES`. Sometimes users wants to see
 information about tables, users can use `DESCRIBE tableName` or `DESCRIBE FORMATTED tableName`.
