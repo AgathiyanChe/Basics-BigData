@@ -139,11 +139,11 @@ ROW FORMAT DELIMITED FIELDS TERMINATED BY char
  > A table is simply an HDFS directory containing one or more files. its path is: `/user/hive/warehouse/people`
 
 
-If a new table is wanted with the same definition, we can use `LIKE`:
+Create new table using `LIKE` statement:
 ```sql
 CREATE TABLE people_otherCountry LIKE people
 ```
-If a new table is wanted with the same definition, we can use `SELECT` statement as well:
+Create a new table using `SELECT` statement as well:
 ```sql
 CREATE TABLE people_otherCountry AS SELECT * FROM people
 ```
@@ -158,5 +158,5 @@ information about tables, users can use `DESCRIBE tableName` or `DESCRIBE FORMAT
 
 To add data in tables, the data should be uploaded in the HDFS directory:
 ```bash
-hdfs dfs -mv /tmp/sales.txt /user/hive/warehouse/sales/
+hdfs dfs -mv /tmp/people.txt /user/hive/warehouse/people/
 ```
