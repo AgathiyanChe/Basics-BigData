@@ -6,6 +6,7 @@ These notes try to show the most useful command lines that I use in my daily wor
 1. [HDFS and YARN](#hdfs-and-yarn)  
 2. [Sqoop](#sqoop)  
 3. [Hive and Impala](#hive-and-impala)
+4. [Data formats](#data-formats)
 
 
 ## HDFS and YARN
@@ -151,7 +152,7 @@ If remove problems will be avoid, the `EXTERNAL` statement can be used:
 ```sql
 CREATE EXTERNAL TABLE people (id INT,name STRING,telephone INT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
 ```
->Remenber to use `Location` when a tables should be created in a specific directory
+> Remember to use `Location` when a tables should be created in a specific directory
 
 If the user wants to explore the tables in the current database: `SHOW TABLES`. Sometimes users wants to see
 information about tables, users can use `DESCRIBE tableName` or `DESCRIBE FORMATTED tableName`.
@@ -181,6 +182,32 @@ The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manag
 
 | External Metadata Change                                       | Required Actions |
 |:---------------------------------------------------------------|:-----------------|
-| New table added                                                |    `INVALIDATE METADATA`   |
-| Table schema modified or New data added to a table             |      `REFRESH <table>`     |
-| Data in a table extensively altered, such as by HDFS balancing |        `INVALIDATE METADATA <table>`  |
+| New table added                                                | `INVALIDATE METADATA`   |
+| Table schema modified or New data added to a table             | `REFRESH <table>`     |
+| Data in a table extensively altered, such as by HDFS balancing | `INVALIDATE METADATA <table>`  |
+
+## Data formats
+
+### Types of Data
+
+**Text File**
+- The most basic type in Hadoop
+- Useful when debugging
+- Representing numerics like string wastes storage space
+**Sequence File**
+- Less verbose than *text file*
+- Capable of stoting binary data
+**Avro File**
+- Efficient storage due to optimized binary encoding
+- Widely supported
+- Ideal for long-term
+  - Read/Write from a lot of languages
+  -  Embed schema -> Readable data
+  - Schema evolution can accommodate changes
+**Columnar**
+- Organize the information in columns
+- Very efficient with small subsets of a table's column
+**Parquet File**
+- Schema metadata embedded in the file
+- Advanced optimizations from [Dremel paper](https://static.googleusercontent.com/media/research.google.com/es//pubs/archive/36632.pdf)
+- Most efficient when adding many records at once
