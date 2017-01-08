@@ -194,9 +194,11 @@ The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manag
 - The most basic type in Hadoop
 - Useful when debugging
 - Representing numerics like string wastes storage space
+
 **Sequence File**
 - Less verbose than *text file*
 - Capable of stoting binary data
+
 **Avro File**
 - Efficient storage due to optimized binary encoding
 - Widely supported
@@ -204,9 +206,11 @@ The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manag
   - Read/Write from a lot of languages
   -  Embed schema -> Readable data
   - Schema evolution can accommodate changes
+
 **Columnar**
 - Organize the information in columns
 - Very efficient with small subsets of a table's column
+
 **Parquet File**
 - Schema metadata embedded in the file
 - Advanced optimizations from [Dremel paper](https://static.googleusercontent.com/media/research.google.com/es//pubs/archive/36632.pdf)
