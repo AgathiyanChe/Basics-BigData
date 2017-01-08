@@ -156,7 +156,31 @@ CREATE EXTERNAL TABLE people (id INT,name STRING,telephone INT) ROW FORMAT DELIM
 If the user wants to explore the tables in the current database: `SHOW TABLES`. Sometimes users wants to see
 information about tables, users can use `DESCRIBE tableName` or `DESCRIBE FORMATTED tableName`.
 
-To add data in tables, the data should be uploaded in the HDFS directory:
+Add data in tables uploading the info in the HDFS directory:
 ```bash
 hdfs dfs -mv /tmp/people.txt /user/hive/warehouse/people/
 ```
+or
+```sql
+LOAD DATA INPATH 'tmp/people.txt' INTO TABLE people
+```
+> This command moves the data just the command above
+
+Remove all the data using the `OVERWRITE` as:
+```sql
+LOAD DATA INPATH 'tmp/people.txt' OVERWRITE INTO TABLE people
+```
+
+Another way is to populate a table is through a query using `INSERT INTO` statement:
+```sql
+INSERT INTO TABLE people_copy SELECT * FROM people
+```
+
+In case of using Impala, *metastore* is important to keep in mind due to be outsite of impala.
+The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manager*. Because of that, find below some important commands about that:
+
+| External Metadata Change                                       | Required Actions |
+|:---------------------------------------------------------------|:-----------------|
+| New table added                                                |    `INVALIDATE METADATA`   |
+| Table schema modified or New data added to a table             |      `REFRESH <table>`     |
+| Data in a table extensively altered, such as by HDFS balancing |        INVALIDATE METADATA <table>  |
