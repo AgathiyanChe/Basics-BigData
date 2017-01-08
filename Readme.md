@@ -183,4 +183,4 @@ The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manag
 |:---------------------------------------------------------------|:-----------------|
 | New table added                                                |    `INVALIDATE METADATA`   |
 | Table schema modified or New data added to a table             |      `REFRESH <table>`     |
-| Data in a table extensively altered, such as by HDFS balancing |        INVALIDATE METADATA <table>  |
+| Data in a table extensively altered, such as by HDFS balancing |        `INVALIDATE METADATA <table>``  |
