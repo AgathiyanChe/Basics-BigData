@@ -176,11 +176,11 @@ Another way is to populate a table is through a query using `INSERT INTO` statem
 INSERT INTO TABLE people_copy SELECT * FROM people
 ```
 
-In case of using Impala, *metastore* is important to keep in mind due to be outsite of impala.
+In case of using Impala,  is important to keep in mind *metastore* due to be outsite of impala.
 The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manager*. Because of that, find below some important commands about that:
 
 | External Metadata Change                                       | Required Actions |
 |:---------------------------------------------------------------|:-----------------|
 | New table added                                                |    `INVALIDATE METADATA`   |
 | Table schema modified or New data added to a table             |      `REFRESH <table>`     |
-| Data in a table extensively altered, such as by HDFS balancing |        `INVALIDATE METADATA <table>``  |
+| Data in a table extensively altered, such as by HDFS balancing |        `INVALIDATE METADATA <table>`  |
