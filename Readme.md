@@ -133,22 +133,11 @@ DROP DATABASE IF EXISTS exampleDatabase
 ```
 Create a table:
 ```sql
-CREATE TABLE exampleTable (colname DATATYPE, ...)
+CREATE TABLE people (colname DATATYPE, ...)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY char
 ```
- > A table is simply an HDFS directory containing one or more files. its path is: `/user/hive/warehouse/exampleTable`
+ > A table is simply an HDFS directory containing one or more files. its path is: `/user/hive/warehouse/people`
 
-:heavy_exclamation_mark: To show more *Data Definition Language* an example will be used for that:
-
-```sql
--- Row: 1,Marc,666666666
-CREATE TABLE people (id INT,name STRING,telephone INT) ROW FORMAT DELIMITEDFIELDS TERMINATED BY ',';
-```
-The result is:
-
-| Id             | Name           | Telephone      |
-| :------------- | :------------- | :------------- |
-| 1              | Marc           |  666666666     |
 
 If a new table is wanted with the same definition, we can use `LIKE`:
 ```sql
@@ -166,3 +155,8 @@ CREATE EXTERNAL TABLE people (id INT,name STRING,telephone INT) ROW FORMAT DELIM
 
 If the user wants to explore the tables in the current database: `SHOW TABLES`. Sometimes users wants to see
 information about tables, users can use `DESCRIBE tableName` or `DESCRIBE FORMATTED tableName`.
+
+To add data in tables, the data should be uploaded in the HDFS directory:
+```bash
+hdfs dfs -mv /tmp/sales.txt /user/hive/warehouse/sales/
+```
