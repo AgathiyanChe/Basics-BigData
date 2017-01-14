@@ -1,5 +1,5 @@
 # Notes
-These notes try to show the most basic command lines that I use in my daily work with Hadoop environment.
+notes with basic command lines that some concepts.
 
 **Table of Content**
 
