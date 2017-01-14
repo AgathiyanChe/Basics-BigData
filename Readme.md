@@ -226,6 +226,7 @@ Avro hold the next kind of types:
 - **Complex** *record, enum, array, map, union, fixed*
 
 A schema is represented in *JSON* by one of:
+
 1. A *JSON* string, naming a defined type
 2. A *JSON* object, of the form:
 `{"type": "typeName ...attributes... "}`
