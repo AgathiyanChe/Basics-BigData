@@ -1,5 +1,5 @@
 # Notes
-notes with basic command lines that some concepts.
+notes with basic command lines and some concepts.
 
 **Table of Content**
 
