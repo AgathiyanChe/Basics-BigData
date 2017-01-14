@@ -9,6 +9,7 @@ These notes try to show the most basic command lines that I use in my daily work
   - [Impala in Shell](#impala-in-shell)
   - [Hive in Shell](#hive-in-shell)
   - [DLL](#ddl)
+  - [Partitioning](#partitioning)
 4. [Data formats](#data-formats)
   - [Types of Data](#types-of-data)
   - [More deeply in Avro](#more-deeply-in-avro)
