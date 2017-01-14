@@ -218,7 +218,7 @@ and the folder structure is:
 ```
 > :exclamation:  partition column is a virtual column, data is not stored in the field
 
-The data can be loaded in partitioned table through 2 ways:
+The data can be loaded in partitioned table through 2 ways:  
 1. Dynamic partitioning
 2. Static partitioning
 
@@ -228,8 +228,7 @@ The data can be loaded in partitioned table through 2 ways:
 ```sql
 INSERT OVERWRITE TABLE example_cities PARTITION(city) SELECT num_pers,city FROM example;
 ```
-:bulb: More about (Dynamic partition configuration)[https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML#LanguageManualDML-DynamicPartitionInserts]
-
+:bulb: More about [Dynamic partition configuration](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML#LanguageManualDML-DynamicPartitionInserts)
 #### Static
 ```sql
 ALTER TABLE example_cities ADD PARTITION (city = 'Madrid')
