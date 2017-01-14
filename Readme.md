@@ -172,7 +172,8 @@ or
 ```sql
 LOAD DATA INPATH 'tmp/people.txt' INTO TABLE people
 ```
-> This command moves the data just the command above
+> This command moves the data just the command above.
+:bulb: More information about [DML](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML#LanguageManualDML-HiveDataManipulationLanguage)
 
 Remove all the data using the `OVERWRITE` as:
 ```sql
@@ -194,6 +195,59 @@ The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manag
 | Data in a table extensively altered, such as by HDFS balancing | `INVALIDATE METADATA <table>`  |
 
 :bulb: More information about the *DDL* options click in the [link](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL)
+
+
+### Partitioning
+
+We said before *"By default, a table is simply an HDFS directory containing one or more files"*, so all the data is located in the same place, in other words, a `full scan` is done in this folder because all files are read.
+```sql
+create table example_cities (num_pers int,city string) LOCATION /example_folder/cities
+```
+with partitioning, you divide the data. In time analysis you only read the relevant subsets
+```sql
+create table example_cities (num_pers int) PARTITIONED BY(city String) LOCATION /example_folder/example_cities
+```
+and the folder structure is:
+```
+|_ example_cities
+      |
+      |_ Barcelona
+      |_ Paris
+      |_ London
+```
+> :exclamation:  partition column is a virtual column, data is not stored in the field
+
+The data can be loaded in partitioned table through 2 ways:
+1. Dynamic partitioning
+2. Static partitioning
+
+#### Dynamic
+- Partitions are created based in the last column
+- If the partition has not already exist, it will be created. If exists, it will be overwritten
+```sql
+INSERT OVERWRITE TABLE example_cities PARTITION(city) SELECT num_pers,city FROM example;
+```
+:bulb: More about (Dynamic partition configuration)[https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML#LanguageManualDML-DynamicPartitionInserts]
+
+#### Static
+```sql
+ALTER TABLE example_cities ADD PARTITION (city = 'Madrid')
+```
+**Actions:**  
+1. Adds the partition to the table metadata
+2. Create a subdirectory
+```
+|_ example_cities
+      |
+      |_ Barcelona
+      |_ Paris
+      |_ London
+      |_ Madrid
+```
+Then, the data has to be loaded
+```sql
+LOAD DATA INPATH '/user/data.log' INTO TABLE example_cities PARTITION (city = 'Madrid')
+```
 
 ## Data formats
 
