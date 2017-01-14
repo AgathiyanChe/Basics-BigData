@@ -28,7 +28,7 @@ hdfs dfs -rm -R [-skipTrash]
 ```
 > :exclamation: Be careful with `-skipTrash` option because it will bypass trash, if enabled, and delete the specified file(s) immediately. This can be useful when it is necessary to delete files from an over-quota directory.
 
-More information about HDFS click in this [**link**](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html#), or put `hdfs dfs` in command line.
+:bulb: More information about HDFS click in this [**link**](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html#), or put `hdfs dfs` in command line.
 
 Yarn app list:
 ```
@@ -118,7 +118,7 @@ beeline -f myFileWithQueries.hql
 impala-shell -e 'SELECT * FROM users'
 ```
 
-More information about the command options click in the [link](https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-BeelineCommandOptions)
+:bulb: More information about the command options click in the [link](https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-BeelineCommandOptions)
 
 ### DDL
 
@@ -186,7 +186,7 @@ The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manag
 | Table schema modified or New data added to a table             | `REFRESH <table>`     |
 | Data in a table extensively altered, such as by HDFS balancing | `INVALIDATE METADATA <table>`  |
 
-More information about the *DDL* options click in the [link](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL)
+:bulb: More information about the *DDL* options click in the [link](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL)
 
 ## Data formats
 
@@ -255,7 +255,7 @@ At minimum, for this example a record definition must include:
 - `docs` (Optional)
 - `aliases` (Optional)
 
-> More information about [field types](http://avro.apache.org/docs/current/spec.html#schema_declaration)
+> :bulb: More information about [field types](http://avro.apache.org/docs/current/spec.html#schema_declaration)
 
 Following the schema of the example:
 ```
@@ -302,3 +302,43 @@ Available tools:
 trevni_random  Create a Trevni file filled with random instances of a schema.
 trevni_tojson  Dumps a Trevni file as JSON.
 ```
+
+### Using Avro in Sqoop, Hive and Impala
+If we want to export some table in sqoop:
+```
+sqoop import \
+--connect jdbc:mysql://localhost/loudacre \
+--username training --password training \
+--table accounts \
+--target-dir /loudacre/accounts_avro \
+--as-avrodatafile
+```
+> The Sqoop import will save the json schema in local directory
+
+If we want to use *Avro* in *Hive* or *Impala* keep in mind that:
+- *Hive* supports all types
+- *Impala* doesn't support complex types, [see more information in impala doc](https://www.cloudera.com/documentation/enterprise/5-4-x/topics/impala_avro.html#avro_data_types)
+
+Add the schema to a table:
+```
+CREATE TABLE example_avro
+STORED AS AVRO
+TBLPROPERTIES ('avro.schema.url'=
+'hdfs://localhost/example/schema.json');
+```
+or embed the schema:
+```
+CREATE TABLE example_avro
+STORED AS AVRO
+TBLPROPERTIES ('avro.schema.literal'=
+'{"name": "order",
+"type": "record",
+"fields": [
+  {"name":"id", "type":"int"},
+  {"name":"cust_id", "type":"int"},
+  {"name":"date", "type":"string"}]
+}');
+```
+> For http schemas, this works for testing and small-scale clusters, but as the schema will be accessed at least once from each task in the job, this can quickly turn the job into a DDOS attack.
+
+> :bulb: More information about [Avro in Hive](https://cwiki.apache.org/confluence/display/Hive/AvroSerDe#AvroSerDe-SpecifyingtheAvroschemaforatable)
