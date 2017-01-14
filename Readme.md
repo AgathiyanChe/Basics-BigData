@@ -6,7 +6,14 @@ These notes try to show the most basic command lines that I use in my daily work
 1. [HDFS and YARN](#hdfs-and-yarn)  
 2. [Sqoop](#sqoop)  
 3. [Hive and Impala](#hive-and-impala)
+  - [Impala in Shell](#impala-in-shell)
+  - [Hive in Shell](#hive-in-shell)
+  - [DLL](#ddl)
 4. [Data formats](#data-formats)
+  - [Types of Data](#types-of-data)
+  - [More deeply in Avro](#more-deeply-in-avro)
+  - [Using Avro in Sqoop, Hive and Impala](#using-avro-in-sqoop-hive-and-impala)
+  - [Using Parquet in Sqoop, Hive and Impala](#using-parquet-in-sqoop-hive-and-impala)
 
 
 ## HDFS and YARN
@@ -320,7 +327,7 @@ If we want to use *Avro* in *Hive* or *Impala* keep in mind that:
 - *Impala* doesn't support complex types, [see more information in impala doc](https://www.cloudera.com/documentation/enterprise/5-4-x/topics/impala_avro.html#avro_data_types)
 
 Add the schema to a table:
-```
+```sql
 CREATE TABLE example_avro
 STORED AS AVRO
 TBLPROPERTIES ('avro.schema.url'=
@@ -342,3 +349,22 @@ TBLPROPERTIES ('avro.schema.literal'=
 > :exclamation: For http schemas, this works for testing and small-scale clusters, but as the schema will be accessed at least once from each task in the job, this can quickly turn the job into a DDOS attack.
 
 > :bulb: More information about [Avro in Hive](https://cwiki.apache.org/confluence/display/Hive/AvroSerDe#AvroSerDe-SpecifyingtheAvroschemaforatable)
+
+### Using Parquet in Sqoop, Hive and Impala
+If we want to export some table in sqoop:
+```
+sqoop import \
+--connect jdbc:mysql://localhost/loudacre \
+--username training --password training \
+--table accounts \
+--target-dir /loudacre/accounts_avro \
+--as-parquetfile
+```
+Create table stored as *Parquet*:
+```sql
+CREATE TABLE example_parquet (
+id INT,
+prod_id INT)
+STORED AS PARQUET
+LOCATION '/folderExample/example_parquet';
+```
