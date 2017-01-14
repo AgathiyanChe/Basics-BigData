@@ -462,3 +462,4 @@ agents1.sinks.s1.hdfs.round = true
 agents1.sinks.s1.hdfs.roundValue = 10
 agents1.sinks.s1.hdfs.roundUnit = minute
 ```
+:bulb: More information about [Flume](https://flume.apache.org/FlumeUserGuide.html)
