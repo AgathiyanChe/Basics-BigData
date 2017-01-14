@@ -1,5 +1,5 @@
 # Notes
-These notes try to show the most useful command lines that I use in my daily work with Hadoop environment.
+These notes try to show the most basic command lines that I use in my daily work with Hadoop environment.
 
 **Table of Content**
 
@@ -186,6 +186,8 @@ The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manag
 | Table schema modified or New data added to a table             | `REFRESH <table>`     |
 | Data in a table extensively altered, such as by HDFS balancing | `INVALIDATE METADATA <table>`  |
 
+More information about the *DDL* options click in the [link](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL)
+
 ## Data formats
 
 ### Types of Data
@@ -215,3 +217,87 @@ The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manag
 - Schema metadata embedded in the file
 - Advanced optimizations from [Dremel paper](https://static.googleusercontent.com/media/research.google.com/es//pubs/archive/36632.pdf)
 - Most efficient when adding many records at once
+
+### More deeply in Avro
+To understand Avro, we must understand [*serialization*](https://en.wikipedia.org/wiki/Serialization), which is the process of translating data structures or object state into a format that can be stored (for example, in a file or memory buffer, or transmitted across a network connection link) and reconstructed later in the same or another computer environment.
+
+Avro hold the next kind of types:
+- **Simple**: *null, Boolean, int, long, float, double, bytes, String*
+- **Complex** *record, enum, array, map, union, fixed*
+
+A schema is represented in *JSON* by one of:
+1. A *JSON* string, naming a defined type
+2. A *JSON* object, of the form:
+`{"type": "typeName ...attributes... "}`
+where typeName is either a primitive or derived type name.
+3. A *JSON* array, representing a union of embedded types.
+
+An example of *Avro* schema:
+```json
+{"namespace": "example.avro",
+ "type": "record",
+ "name": "User",
+ "fields": [
+     {"name": "name", "type": "string"},
+     {"name": "favorite_number",  "type": ["int", "null"]},
+     {"name": "favorite_color", "type": ["string", "null"]}
+ ]
+}
+```
+> A schema file can only contain a single schema definition
+
+At minimum, for this example a record definition must include:
+- `type`
+- `name`
+- `fields`
+- `nameSpace`
+- `docs` (Optional)
+- `aliases` (Optional)
+
+> More information about [field types](http://avro.apache.org/docs/current/spec.html#schema_declaration)
+
+Following the schema of the example:
+```
+{"type": "record",
+"name": "nameOfRecord",
+"namespace": "qualifies the name",
+"aliases": "alias" //Optional
+"docs": "comments to clarify" //Optional
+"fields": [{"name":...,"type":...,
+          "default":...}] //Optional
+}
+```
+The *full name Schema* is defined as = `nameSpace` + `name`. In this case, `example.avro.User`  
+
+If you want to inspect Avro files, you can do it with *Avro Tools*.
+```
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+----------------
+Available tools:
+          cat  extracts samples from files
+      compile  Generates Java code for the given schema.
+       concat  Concatenates avro files without re-compressing.
+   fragtojson  Renders a binary-encoded Avro datum as JSON.
+     fromjson  Reads JSON records and writes an Avro data file.
+     fromtext  Imports a text file into an avro data file.
+      getmeta  Prints out the metadata of an Avro data file.
+    getschema  Prints out schema of an Avro data file.
+          idl  Generates a JSON schema from an Avro IDL file
+ idl2schemata  Extract JSON schemata of the types from an Avro IDL file
+       induce  Induce schema/protocol from Java class/interface via reflection.
+   jsontofrag  Renders a JSON-encoded Avro datum as binary.
+       random  Creates a file with randomly generated instances of a schema.
+      recodec  Alters the codec of a data file.
+       repair  Recovers data from a corrupt Avro Data file
+  rpcprotocol  Output the protocol of a RPC service
+   rpcreceive  Opens an RPC Server and listens for one message.
+      rpcsend  Sends a single RPC message.
+       tether  Run a tethered mapreduce job.
+       tojson  Dumps an Avro data file as JSON, record per line or pretty.
+       totext  Converts an Avro data file to a text file.
+     totrevni  Converts an Avro data file to a Trevni file.
+  trevni_meta  Dumps a Trevni file's metadata as JSON.
+trevni_random  Create a Trevni file filled with random instances of a schema.
+trevni_tojson  Dumps a Trevni file as JSON.
+```
