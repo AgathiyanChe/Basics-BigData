@@ -426,3 +426,39 @@ LOCATION '/folderExample/example_parquet';
 ## Flume
 
 ![Flume-dataflow](/images/flume.png)
+
+An ***event*** is the *Flume* works unit and it is composed by:
+- Body (payload)
+- Headers (metadata)
+
+The components of Flume architecture are:
+- Source: event reciever
+- Channel: Buffer
+- Sink: event deliver
+
+### configuration
+
+Flume agent is configured through a java properties, we show an example:
+```properties
+# define components
+agents1.sources = s1
+agents1.channels = c1
+agents1.sinks = s1
+
+# define source from Syslog
+agents1.sources.s1.type = syslogtcp
+agents1.sources.s1.port = 5140
+agents1.sources.s1.host = localhost
+agents1.sources.s1.channels = c1
+
+#define channel
+agents1.channels.c1.type = memory
+
+#define sink
+agents1.sinks.s1.channel = c1
+agents1.sinks.s1.hdfs.path = /flume/events/%y-%m-%d/%H%M/%S
+agents1.sinks.s1.hdfs.filePrefix = events-
+agents1.sinks.s1.hdfs.round = true
+agents1.sinks.s1.hdfs.roundValue = 10
+agents1.sinks.s1.hdfs.roundUnit = minute
+```
