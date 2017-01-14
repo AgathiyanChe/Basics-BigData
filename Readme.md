@@ -15,6 +15,7 @@ These notes try to show the most basic command lines that I use in my daily work
   - [More deeply in Avro](#more-deeply-in-avro)
   - [Using Avro in Sqoop, Hive and Impala](#using-avro-in-sqoop-hive-and-impala)
   - [Using Parquet in Sqoop, Hive and Impala](#using-parquet-in-sqoop-hive-and-impala)
+5. [Flume](#flume)
 
 
 ## HDFS and YARN
@@ -422,3 +423,6 @@ prod_id INT)
 STORED AS PARQUET
 LOCATION '/folderExample/example_parquet';
 ```
+## Flume
+
+![Flume-dataflow](/images/flume.png)
