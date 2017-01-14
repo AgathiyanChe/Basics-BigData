@@ -339,6 +339,6 @@ TBLPROPERTIES ('avro.schema.literal'=
   {"name":"date", "type":"string"}]
 }');
 ```
-> For http schemas, this works for testing and small-scale clusters, but as the schema will be accessed at least once from each task in the job, this can quickly turn the job into a DDOS attack.
+> :exclamation: For http schemas, this works for testing and small-scale clusters, but as the schema will be accessed at least once from each task in the job, this can quickly turn the job into a DDOS attack.
 
 > :bulb: More information about [Avro in Hive](https://cwiki.apache.org/confluence/display/Hive/AvroSerDe#AvroSerDe-SpecifyingtheAvroschemaforatable)
