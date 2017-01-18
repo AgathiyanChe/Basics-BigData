@@ -511,3 +511,17 @@ has some addicional functions in his [PairRDDFunctions](http://spark.apache.org/
 http://spark.apache.org/docs/1.6.3/cluster-overview.html
 http://spark.apache.org/docs/1.6.3/configuration.html#spark-properties
 -->
+
+### Runnings apps
+ Spark applications run as independent sets of processes on a cluster, coordinated by the `SparkContext` object in your main program.
+ I recommend you to read some interesting concepts about Spark in cluster in the [Spark glossary](http://spark.apache.org/docs/1.6.3/cluster-overview.html#glossary)
+
+To launch a Spark Application, the `spark-submit` script is used for that.
+If your code depends on other projects, you will need to package them alongside your application in order to distribute the code to a Spark cluster.
+Both sbt and Maven have assembly plugins. When creating assembly jars, list Spark and Hadoop as provided dependencies;
+these need not be bundled since they are provided by the cluster manager at runtime.
+
+First of all, You can remember that if you need help, the `help` command will be there:
+```Shell
+spark-submit --help
+```
