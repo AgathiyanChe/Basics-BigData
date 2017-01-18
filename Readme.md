@@ -471,11 +471,13 @@ agents1.sinks.s1.hdfs.roundUnit = minute
 
 ### Starting
 
-If you want to begin with *Apache Spark*, download the [package](http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz)
-and start.
-<!--TO DO: ADD a screenShot of Apache Spark shell -->
+If you want to begin with *Apache Spark*:
+- download the [package](http://d3kbcqa49mib13.cloudfront.net/spark-1.6.3-bin-hadoop2.6.tgz)
+- Move to the parent folder and run `./bin/spark-shell`
 
-Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API.
+![spark-shell](/images/spark-shell.png)
+
+Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API. You can see it in the image.
 
 The basic *Spark* unit is the ***RDD***:
 - **R** esilient : If data is losed, it can be created again
