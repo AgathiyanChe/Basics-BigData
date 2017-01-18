@@ -463,3 +463,48 @@ agents1.sinks.s1.hdfs.roundValue = 10
 agents1.sinks.s1.hdfs.roundUnit = minute
 ```
 :bulb: More information about [Flume](https://flume.apache.org/FlumeUserGuide.html)
+
+## Spark
+
+### Starting with Spark
+
+If you want to begin with *Apache Spark*, download the [package](http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz)
+and start.
+<!--TO DO: ADD a screenShot of Apache Spark shell -->
+
+Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API.
+
+The basic *Spark* unit is the ***RDD***:
+- **R** esilient : If data is losed, it can be created again
+- **D** istributed : Compute across the cluster
+- **D** ataset : Data used to work with
+
+There are two ways to create RDDs: parallelizing an existing collection in your driver program, or referencing a dataset in an external storage system, such as a shared filesystem, HDFS, HBase, or any data source offering a Hadoop InputFormat.
+
+Remenber that:
+- **RDD** are immutable
+- Transform to `Sequence` to modify the data as needed
+
+And the RDD operations ca be divided in two blocks:
+- `Transformations` arround the *pipelines*
+- `Actions` to return values
+
+We are going to present an example of **Create** a **RDD**
+<!--TO DO: ADD example  -->
+*Spark* is **lazy evaluation** that means that *Transformations* are not calculated until an action.
+<!--TO DO: ADD example of map -->
+
+To evaluate the excuation *lineage*, we can use `.toDebugString`
+<!--TO DO: ADD example -->
+
+If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
+
+Some interesting thing to metion are *Pair RDD*. It will have `(key,value)`(*tuples*) structure, and it
+has some addicional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
+<!--TO DO: ADD example create a pair of fields-->
+
+
+<!--
+http://spark.apache.org/docs/1.6.3/cluster-overview.html
+http://spark.apache.org/docs/1.6.3/configuration.html#spark-properties
+-->
