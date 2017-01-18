@@ -1,5 +1,5 @@
 # Notes
-notes with basic command lines and some concepts.
+Notes with basic command lines and some concepts.
 
 **Table of Content**
 
@@ -16,6 +16,9 @@ notes with basic command lines and some concepts.
   - [Using Avro in Sqoop, Hive and Impala](#using-avro-in-sqoop-hive-and-impala)
   - [Using Parquet in Sqoop, Hive and Impala](#using-parquet-in-sqoop-hive-and-impala)
 5. [Flume](#flume)
+  - [Configuration](#configuration)
+6. [Spark](#spark)
+  - [Starting](#starting)
 
 
 ## HDFS and YARN
@@ -466,7 +469,7 @@ agents1.sinks.s1.hdfs.roundUnit = minute
 
 ## Spark
 
-### Starting with Spark
+### Starting
 
 If you want to begin with *Apache Spark*, download the [package](http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz)
 and start.
@@ -499,7 +502,7 @@ To evaluate the excuation *lineage*, we can use `.toDebugString`
 
 If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
 
-Some interesting thing to metion are *Pair RDD*. It will have `(key,value)`(*tuples*) structure, and it
+Some interesting thing to metion are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
 has some addicional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
 <!--TO DO: ADD example create a pair of fields-->
 
