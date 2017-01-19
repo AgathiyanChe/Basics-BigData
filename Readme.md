@@ -475,12 +475,13 @@ If you want to begin with *Apache Spark*:
 - Download the [package](http://d3kbcqa49mib13.cloudfront.net/spark-1.6.3-bin-hadoop2.6.tgz)
 - Move to the parent folder and run `./bin/spark-shell`
 
-Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API.
-You can see it in the image. If you want more information about `sparkContext` you can visit his [library](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.SparkContext)
-
-![spark-shell](/images/spark-shell.png)
-
 :mag_right: Use `:help` to see the help commands
+
+Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API.
+You can see it in the image.
+
+<!-- ![spark-shell](/images/spark-shell.png) -->
+If you want more information about `sparkContext` you can visit his [library](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.SparkContext)
 
 The basic *Spark* unit is the ***RDD***:
 - **R** esilient : If data is losed, it can be created again
@@ -522,16 +523,6 @@ Once you have seen some *maps* transformations, you could find interesting to
 evaluate the *lineage* excuation , we can use `.toDebugString` for that:
 <!--TO DO: ADD example -->
 
-Depending of what kind of transformations are you using, you have *skew* data, so be careful.
-
- Once you have seen something about Spark, we show you 3 important concepts:
-
-| Concept     | Description     |
-| :------------- | :------------- |
-| Job      | A set of tasks executed as a result of an action |
-| Stage      | A set of task in a job |
-| Task        | Unit of work  |
-
 If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
 
 Some interesting thing to metion are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
@@ -539,6 +530,21 @@ has some addicional functions in his [PairRDDFunctions](http://spark.apache.org/
 <!--TO DO:
 ADD example create a pair of fields
  apply a reduceByKey -->
+
+Once you have seen something about Spark, we show you 3 important concepts:
+
+| Concept     | Description     |
+| :------------- | :------------- |
+| Job      | A set of tasks executed as a result of an action |
+| Stage      | A set of task in a job |
+| Task        | Unit of work  |
+
+Depending of what kind of transformations are you using, you may have *skew* data, so be careful.
+The dependencies within RDD can be a problem, so keep in mind:
+- Narrow dependencies: No shuffle beetween Node. All transformations in workers. e.g **map**
+- Wide dependencies: data need to be suffled and it defines a new *stage*. e.g **reduce**,**join**
+
+I recommend you to see [this presentation](https://youtu.be/Wg2boMqLjCg) by *Vida Ha* and *Holden Karau*
 
 ### Runnings apps
  Spark applications run as independent sets of processes on a cluster, coordinated by the `SparkContext` object in your main program.
