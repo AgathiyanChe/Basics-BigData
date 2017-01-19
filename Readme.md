@@ -514,13 +514,9 @@ val split = text1.flatMap(x => x.split(' ')).map(x => (x,1))
 
 // See the tuples
 split.foreach(println)
-```
 
-<!--TO DO: ADD example how to load a field
-textFile
-WholeTexFile
-json
--->
+// count linesOfRDD = split.count
+```
 
 Important thing is that *Spark* is **lazy evaluation** that means that
 *Transformations* are not calculated until an action.
@@ -528,7 +524,20 @@ Important thing is that *Spark* is **lazy evaluation** that means that
 
 Once you have seen some *maps* transformations, you could find interesting to  
 evaluate the *lineage* excuation , we can use `.toDebugString` for that:
-<!--TO DO: ADD example -->
+
+
+```scala
+scala> res.toDebugString
+res21: String =
+(1) MapPartitionsRDD[33] at map at <console>:25 []
+ |  ShuffledRDD[30] at reduceByKey at <console>:23 []
+ +-(1) MapPartitionsRDD[29] at map at <console>:23 []
+    |  MapPartitionsRDD[28] at flatMap at <console>:23 []
+    |  file:///home/training/Desktop/quixote.txt MapPartitionsRDD[11] at textFile at <console>:21 []
+    |  file:///home/training/Desktop/quixote.txt HadoopRDD[10] at textFile at <console>:21 []
+
+```
+
 
 If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
 
