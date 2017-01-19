@@ -526,12 +526,11 @@ Depending of what kind of transformations are you using, you have *skew* data, s
 
  Once you have seen something about Spark, we show you 3 important concepts:
 
- | Concept         | Description     |
- | :-------------  | :-------------  |
- | Job         | A set of tasks executed as a result of an action       |
- | Stage       | A set of task in a job    |
+ | Concept     | Description     |
+ | :------------- | :------------- |
+ | Job      | A set of tasks executed as a result of an action |
+ | Stage      | A set of task in a job |
  | Task        | Unit of work  |
-
 
 If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
 
