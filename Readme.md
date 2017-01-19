@@ -19,6 +19,7 @@ Notes with basic command lines and some concepts.
   - [Configuration](#configuration)
 6. [Spark](#spark)
   - [Starting](#starting)
+  - [Running Apps](#running-apps)
 
 
 ## HDFS and YARN
@@ -504,9 +505,15 @@ And the RDD operations are divided in two blocks:
 
 To see the *transformations* and *action* concepts we would like to present
 an example of *Create* a **RDD**. In our case, we use the *Quixote* intro to practise:
-```bash
-# Load the file in Spark memory
-scala> sc.textFile("/home/exampleSpark/quixote.txt")
+```scala
+// Load the file in Spark memory
+val text = sc.textFile("/home/exampleSpark/quixote.txt")
+
+// Apply some maps functions
+val split = text1.flatMap(x => x.split(' ')).map(x => (x,1))
+
+// See the tuples
+split.foreach(println)
 ```
 
 <!--TO DO: ADD example how to load a field
