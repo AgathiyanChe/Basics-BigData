@@ -489,13 +489,21 @@ There are two ways to create RDDs: parallelizing an existing collection in your 
 Remenber that:
 - **RDD** are immutable
 - Transform to `Sequence` to modify the data as needed
+<!--
+- Data is part across worker nodes
+
+-->
 
 And the RDD operations ca be divided in two blocks:
 - `Transformations` arround the *pipelines*
 - `Actions` to return values
 
 We are going to present an example of **Create** a **RDD**
-<!--TO DO: ADD example  -->
+<!--TO DO: ADD example how to load a field
+textFile
+WholeTexFile
+json
+-->
 *Spark* is **lazy evaluation** that means that *Transformations* are not calculated until an action.
 <!--TO DO: ADD example of map -->
 
@@ -506,7 +514,9 @@ If you want to now more about **RDD**, you can visit the [API documentation](htt
 
 Some interesting thing to metion are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
 has some addicional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
-<!--TO DO: ADD example create a pair of fields-->
+<!--TO DO:
+ADD example create a pair of fields
+ apply a reduceByKey -->
 
 
 <!--
@@ -527,3 +537,9 @@ First of all, You can remember that if you need help, the `help` command will be
 ```Shell
 spark-submit --help
 ```
+Spark has many parameters to tune depeding of our needs, we are going to take a look:
+<!--
+http://spark.apache.org/docs/1.6.3/submitting-applications.html#launching-applications-with-spark-submit
+http://spark.apache.org/docs/1.6.3/submitting-applications.html#master-urls
+http://spark.apache.org/docs/1.6.3/configuration.html#spark-configuration
+-->
