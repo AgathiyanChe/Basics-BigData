@@ -510,6 +510,13 @@ json
 To evaluate the excuation *lineage*, we can use `.toDebugString`
 <!--TO DO: ADD example -->
 
+
+<!--TO DO:
+ADD Spark terminology
+ADD cache/persist
+ -->
+
+
 If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
 
 Some interesting thing to metion are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
