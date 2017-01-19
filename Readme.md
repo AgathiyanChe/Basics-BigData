@@ -524,12 +524,6 @@ evaluate the *lineage* excuation , we can use `.toDebugString` for that:
 
 Depending of what kind of transformations are you using, you have *skew* data, so be careful.
 
-
-<!--TO DO:
-ADD Spark terminology
-ADD cache/persist
- -->
-
  Once you have seen something about Spark, we show you 3 important concepts:
 
  | Concept         | Description     |
