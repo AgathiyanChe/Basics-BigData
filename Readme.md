@@ -520,14 +520,14 @@ split.foreach(println)
 // count linesOfRDD = split.count
 ```
 
-Important thing is that *Spark* is **lazy evaluation** that means that
+An important thing is that *Spark* is **lazy evaluation** that means that
 *Transformations* are not calculated until an action.
 <!--TO DO: ADD example of map -->
 
 
 If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
 
-Some interesting thing to mention are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
+Next point to mention are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
 has some additional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
 
 Once you have seen some *maps* transformations, you could find interesting to  
@@ -561,8 +561,8 @@ The dependencies within RDD can be a problem, so keep in mind:
 I recommend you to see [this presentation](https://youtu.be/Wg2boMqLjCg) by *Vida Ha* and *Holden Karau*
 
 ### Runnings apps
- Spark applications run as independent sets of processes on a cluster, coordinated by the `SparkContext` object in your main program.
- I recommend you to read some interesting concepts about Spark in cluster in the [Spark glossary](http://spark.apache.org/docs/1.6.3/cluster-overview.html#glossary)
+Spark applications run as independent sets of processes on a cluster, coordinated by the `SparkContext` object in your main program.
+I recommend you to read some interesting concepts about Spark in cluster in the [Spark glossary](http://spark.apache.org/docs/1.6.3/cluster-overview.html#glossary)
 
 To launch a Spark Application, the `spark-submit` script is used for that.
 If your code depends on other projects, you will need to package them alongside your application in order to distribute the code to a Spark cluster.
