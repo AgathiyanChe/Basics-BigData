@@ -522,9 +522,14 @@ Important thing is that *Spark* is **lazy evaluation** that means that
 *Transformations* are not calculated until an action.
 <!--TO DO: ADD example of map -->
 
+
+If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
+
+Some interesting thing to metion are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
+has some addicional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
+
 Once you have seen some *maps* transformations, you could find interesting to  
 evaluate the *lineage* excuation , we can use `.toDebugString` for that:
-
 
 ```scala
 scala> res.toDebugString
@@ -537,15 +542,6 @@ res21: String =
     |  file:///home/training/Desktop/quixote.txt HadoopRDD[10] at textFile at <console>:21 []
 
 ```
-
-
-If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
-
-Some interesting thing to metion are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
-has some addicional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
-<!--TO DO:
-ADD example create a pair of fields
- apply a reduceByKey -->
 
 Once you have seen something about Spark, we show you 3 important concepts:
 
