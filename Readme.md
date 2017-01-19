@@ -472,49 +472,71 @@ agents1.sinks.s1.hdfs.roundUnit = minute
 ### Starting
 
 If you want to begin with *Apache Spark*:
-- download the [package](http://d3kbcqa49mib13.cloudfront.net/spark-1.6.3-bin-hadoop2.6.tgz)
+- Download the [package](http://d3kbcqa49mib13.cloudfront.net/spark-1.6.3-bin-hadoop2.6.tgz)
 - Move to the parent folder and run `./bin/spark-shell`
+
+Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API.
+You can see it in the image. If you want more information about `sparkContext` you can visit his [library](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.SparkContext)
 
 ![spark-shell](/images/spark-shell.png)
 
-Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API. You can see it in the image.
+:mag_right: Use `:help` to see the help commands
 
 The basic *Spark* unit is the ***RDD***:
 - **R** esilient : If data is losed, it can be created again
 - **D** istributed : Compute across the cluster
 - **D** ataset : Data used to work with
 
-There are two ways to create RDDs: parallelizing an existing collection in your driver program, or referencing a dataset in an external storage system, such as a shared filesystem, HDFS, HBase, or any data source offering a Hadoop InputFormat.
+There are two ways to create RDDs: parallelizing an existing collection in your driver program,
+or referencing a dataset in an external storage system, such as a shared filesystem, HDFS, HBase,
+or any data source offering a Hadoop InputFormat.
 
 Remenber that:
 - **RDD** are immutable
+- Data is partioned accross the cluster and it is done automatically by *Spark*, but you
+can control it.
 - Transform to `Sequence` to modify the data as needed
-<!--
-- Data is part across worker nodes
 
--->
-
-And the RDD operations ca be divided in two blocks:
+And the RDD operations are divided in two blocks:
 - `Transformations` arround the *pipelines*
 - `Actions` to return values
 
-We are going to present an example of **Create** a **RDD**
+To see the *transformations* and *action* concepts we would like to present
+an example of *Create* a **RDD**. In our case, we use the *Quixote* intro to practise:
+```bash
+# Load the file in Spark memory
+scala> sc.textFile("/home/exampleSpark/quixote.txt")
+```
+
 <!--TO DO: ADD example how to load a field
 textFile
 WholeTexFile
 json
 -->
-*Spark* is **lazy evaluation** that means that *Transformations* are not calculated until an action.
+
+Important thing is that *Spark* is **lazy evaluation** that means that
+*Transformations* are not calculated until an action.
 <!--TO DO: ADD example of map -->
 
-To evaluate the excuation *lineage*, we can use `.toDebugString`
+Once you have seen some *maps* transformations, you could find interesting to  
+evaluate the *lineage* excuation , we can use `.toDebugString` for that:
 <!--TO DO: ADD example -->
+
+Depending of what kind of transformations are you using, you have *skew* data, so be careful.
 
 
 <!--TO DO:
 ADD Spark terminology
 ADD cache/persist
  -->
+
+ Once you have seen something about Spark, we show you 3 important concepts:
+
+ | Concept         | Description     |
+ | :-------------  | :-------------  |
+ | Job         | A set of tasks executed as a result of an action       |
+ | Stage       | A set of task in a job    |
+ | Task        | Unit of work  |
 
 
 If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
@@ -524,12 +546,6 @@ has some addicional functions in his [PairRDDFunctions](http://spark.apache.org/
 <!--TO DO:
 ADD example create a pair of fields
  apply a reduceByKey -->
-
-
-<!--
-http://spark.apache.org/docs/1.6.3/cluster-overview.html
-http://spark.apache.org/docs/1.6.3/configuration.html#spark-properties
--->
 
 ### Runnings apps
  Spark applications run as independent sets of processes on a cluster, coordinated by the `SparkContext` object in your main program.
