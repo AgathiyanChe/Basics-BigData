@@ -497,16 +497,16 @@ or any data source offering a Hadoop InputFormat.
 
 Remenber that:
 - **RDD** are immutable
-- Data is partioned accross the cluster and it is done automatically by *Spark*, but you
+- Data is partitioned across the cluster and it is done automatically by *Spark*, but you
 can control it.
 - Transform to `Sequence` to modify the data as needed
 
 And the RDD operations are divided in two blocks:
-- `Transformations` arround the *pipelines*
+- `Transformations` around the *pipelines*
 - `Actions` to return values
 
 To see the *transformations* and *action* concepts we would like to present
-an example of *Create* a **RDD**. In our case, we use the *Quixote* intro to practise:
+an example of *Create* a **RDD**. In our case, we use the *Quixote* intro to practice:
 ```scala
 // Load the file in Spark memory
 val text = sc.textFile("/home/exampleSpark/quixote.txt")
@@ -527,11 +527,11 @@ Important thing is that *Spark* is **lazy evaluation** that means that
 
 If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
 
-Some interesting thing to metion are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
-has some addicional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
+Some interesting thing to mention are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
+has some additional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
 
 Once you have seen some *maps* transformations, you could find interesting to  
-evaluate the *lineage* excuation , we can use `.toDebugString` for that:
+evaluate the *lineage* execution , we can use `.toDebugString` for that:
 
 ```scala
 scala> res.toDebugString
@@ -555,8 +555,8 @@ Once you have seen something about Spark, we show you 3 important concepts:
 
 Depending of what kind of transformations are you using, you may have *skew* data, so be careful.
 The dependencies within RDD can be a problem, so keep in mind:
-- Narrow dependencies: No shuffle beetween Node. All transformations in workers. e.g **map**
-- Wide dependencies: data need to be suffled and it defines a new *stage*. e.g **reduce**,**join**
+- Narrow dependencies: No shuffle between Node. All transformations in workers. e.g **map**
+- Wide dependencies: data need to be suffle and it defines a new *stage*. e.g **reduce**,**join**
 
 I recommend you to see [this presentation](https://youtu.be/Wg2boMqLjCg) by *Vida Ha* and *Holden Karau*
 
@@ -566,14 +566,14 @@ I recommend you to see [this presentation](https://youtu.be/Wg2boMqLjCg) by *Vid
 
 To launch a Spark Application, the `spark-submit` script is used for that.
 If your code depends on other projects, you will need to package them alongside your application in order to distribute the code to a Spark cluster.
-Both sbt and Maven have assembly plugins. When creating assembly jars, list Spark and Hadoop as provided dependencies;
+Both *sbt and *Maven* have assembly plugins. When creating assembly jars, list Spark and Hadoop as provided dependencies;
 these need not be bundled since they are provided by the cluster manager at runtime.
 
 First of all, You can remember that if you need help, the `help` command will be there:
 ```Shell
 spark-submit --help
 ```
-Spark has many parameters to tune depeding of our needs, we are going to take a look:
+Spark has many parameters to tune depending of our needs, we are going to take a look:
 <!--
 http://spark.apache.org/docs/1.6.3/submitting-applications.html#launching-applications-with-spark-submit
 http://spark.apache.org/docs/1.6.3/submitting-applications.html#master-urls
