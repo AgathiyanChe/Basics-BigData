@@ -481,7 +481,8 @@ If you want to begin with *Apache Spark*:
 Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API.
 You can see it in the image.
 
-<!-- ![spark-shell](/images/spark-shell.png) -->
+![spark-shell](/images/spark-shell.png)
+
 If you want more information about `sparkContext` you can visit his [library](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.SparkContext)
 
 The basic *Spark* unit is the ***RDD***:
