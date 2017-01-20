@@ -579,7 +579,7 @@ tuple.persist(StorageLevel.MEMORY_AND_DISK)
 tuple.unpersist()
 ```
 
-### Jobs,Stage and Task
+### Jobs, Stage and Task
 Once you have seen something about Spark, we show you 3 important concepts:
 
 | Concept     | Description     |
