@@ -21,7 +21,7 @@ Notes with basic command lines and some concepts.
   - [Starting with Spark Shell](#starting-with-spark-shell)
   - [RDD](#rdd)
   - [Persistence](#persistence)
-  - [Jobs,Stage and Task](jobs-stage-and-task)
+  - [Jobs,Stage and Task](#jobs-stage-and-task)
   - [Running Apps](#running-apps)
   - [Spark SQL](#spark-sql)
 
