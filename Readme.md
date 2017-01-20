@@ -632,10 +632,11 @@ for *spark apps* is a *sparkContext*, so in *spark SQL* is *sqlContext*.
 
 We have 2 options:
 - *SqlContext*
-  ```scala
-  import org.apache.apache.spark.SqlContext
-  val sqlC = new SQLContext(sc)
-  ```
+
+    ```scala
+    import org.apache.apache.spark.SqlContext
+    val sqlC = new SQLContext(sc)
+    ```
 - *HiveContext* (support full HiveQL, but requires access to `hive-site.xml` by *Spark*)
 
 #### Creating a Dataframe
