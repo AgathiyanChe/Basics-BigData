@@ -18,8 +18,9 @@ Notes with basic command lines and some concepts.
 5. [Flume](#flume)
   - [Configuration](#configuration)
 6. [Spark](#spark)
-  - [Starting](#starting)
+  - [Starting with Spark Shell](#starting-with-spark-shell)
   - [Running Apps](#running-apps)
+
 
 
 ## HDFS and YARN
@@ -470,7 +471,7 @@ agents1.sinks.s1.hdfs.roundUnit = minute
 
 ## Spark
 
-### Starting
+### Starting with Spark Shell
 
 If you want to begin with *Apache Spark*:
 - Download the [package](http://d3kbcqa49mib13.cloudfront.net/spark-1.6.3-bin-hadoop2.6.tgz)
@@ -485,6 +486,8 @@ You can see it in the image.
 
 
 If you want more information about `sparkContext` you can visit his [library](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.SparkContext)
+
+### RDD
 
 The basic *Spark* unit is the ***RDD***:
 - **R** esilient : If data is losed, it can be created again
@@ -506,35 +509,36 @@ And the RDD operations are divided in two blocks:
 - `Actions` to return values
 
 To see the *transformations* and *action* concepts we would like to present
-an example of *Create* a **RDD**. In our case, we use the *Quixote* intro to practice:
+an example of *Create* a **RDD**. In our case, we use the [*Quixote*](/files/quixote.txt) intro to practice:
 ```scala
 // Load the file in Spark memory
 val text = sc.textFile("/home/exampleSpark/quixote.txt")
-
-// Apply some maps functions
-val split = text1.flatMap(x => x.split(' ')).map(x => (x,1))
-
-// See the tuples
-split.foreach(println)
-
-// count linesOfRDD = split.count
+// Transform the text to Uppercase
+val upperCase = text.map(x => x.upperCase)
+// Count the number of Rows in the RDD
+val resCount = upperCase.count
 ```
-
 An important thing is that *Spark* is **lazy evaluation** that means that
 *Transformations* are not calculated until an action.
-<!--TO DO: ADD example of map -->
 
-
-If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD) about this.
+:bulb: If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD).
 
 Next point to mention are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
 has some additional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
 
+```scala
+// Apply map function to convert the tex above into (word,1)
+val tuple = text1.flatMap(x => x.split(' ')).map(x => (_,1))
+// Calculate the how many times the words are repeated
+val repeated = tuple.reduceByKey((x1,x2) => x1 + x2)
+// See the tuples
+repeated.foreach(println)
+```
 Once you have seen some *maps* transformations, you could find interesting to  
 evaluate the *lineage* execution , we can use `.toDebugString` for that:
 
 ```scala
-scala> res.toDebugString
+scala> repeated.toDebugString
 res21: String =
 (1) MapPartitionsRDD[33] at map at <console>:25 []
  |  ShuffledRDD[30] at reduceByKey at <console>:23 []
@@ -544,6 +548,11 @@ res21: String =
     |  file:///home/training/Desktop/quixote.txt HadoopRDD[10] at textFile at <console>:21 []
 
 ```
+Each *Spark transformation* create a new *child* RDD, and all the childs created depends of his
+parent. This is essential because every *action* will execute all the childs. Because of that, we
+present you the ***persist*** concept.
+
+
 
 Once you have seen something about Spark, we show you 3 important concepts:
 
@@ -559,6 +568,10 @@ The dependencies within RDD can be a problem, so keep in mind:
 - Wide dependencies: data need to be suffle and it defines a new *stage*. e.g **reduce**,**join**
 
 I recommend you to see [this presentation](https://youtu.be/Wg2boMqLjCg) by *Vida Ha* and *Holden Karau*
+
+### Persist
+
+
 
 ### Runnings apps
 Spark applications run as independent sets of processes on a cluster, coordinated by the `SparkContext` object in your main program.
