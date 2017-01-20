@@ -19,7 +19,12 @@ Notes with basic command lines and some concepts.
   - [Configuration](#configuration)
 6. [Spark](#spark)
   - [Starting with Spark Shell](#starting-with-spark-shell)
+  - [RDD](#rdd)
+  - [Persistence](#persistence)
+  - [Jobs,Stage and Task](jobs-stage-and-task)
   - [Running Apps](#running-apps)
+  - [Spark SQL](#spark-sql)
+
 
 
 
@@ -509,7 +514,7 @@ And the RDD operations are divided in two blocks:
 - `Actions` to return values
 
 To see the *transformations* and *action* concepts we would like to present
-an example of *Create* a **RDD**. In our case, we use the [*Quixote*](/files/quixote.txt) intro to practice:
+an example of *create* a **RDD**. In our case, we use the [*Quixote*](/files/quixote.txt) intro to practice:
 ```scala
 // Load the file in Spark memory
 val text = sc.textFile("/home/exampleSpark/quixote.txt")
@@ -519,7 +524,7 @@ val upperCase = text.map(x => x.upperCase)
 val resCount = upperCase.count
 ```
 An important thing is that *Spark* is **lazy evaluation** that means that
-*Transformations* are not calculated until an action.
+*transformations* are not calculated until an *action*.
 
 :bulb: If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD).
 
@@ -550,28 +555,55 @@ res21: String =
 ```
 Each *Spark transformation* create a new *child* RDD, and all the childs created depends of his
 parent. This is essential because every *action* will execute all the childs. Because of that, we
-present you the ***persist*** concept.
+present you the ***persistence*** concept.
 
+### Persistence
 
+***Persistence*** is the process to save the data in memory by default. Once the data is persisted
 
+When we are working in a distributed system, the data is partitioned across the cluster, and your
+persisted data will be saved in the *Executor JVMs*. If your partition persisted is not
+available, *Driver* starts a new task to recompute the partition in a different node, then the data
+is never lost.
+
+*Spark* has 3 Storage location options:
+
+- **MEMORY_ONLY**(default) : Same as *cache*
+- **MEMORY_AND_DISK** : Store partitions on disk if it not fit in memory
+- **DISK_ONLY** : Store all in disk
+```Scala
+import org.apache.spark.storage.StorageLevel
+// Persist data
+tuple.persist(StorageLevel.MEMORY_AND_DISK)
+// Unpersist data
+tuple.unpersist()
+```
+
+### Jobs,Stage and Task
 Once you have seen something about Spark, we show you 3 important concepts:
 
 | Concept     | Description     |
 | :------------- | :------------- |
-| Job      | A set of tasks executed as a result of an action |
-| Stage      | A set of task in a job |
-| Task        | Unit of work  |
+| *Job*      | A set of tasks executed as a result of an action |
+| *Stage*      | A set of task in a job |
+| *Task*        | Unit of work  |
 
 Depending of what kind of transformations are you using, you may have *skew* data, so be careful.
 The dependencies within RDD can be a problem, so keep in mind:
 - Narrow dependencies: No shuffle between Node. All transformations in workers. e.g **map**
-- Wide dependencies: data need to be suffle and it defines a new *stage*. e.g **reduce**,**join**
+- Wide dependencies: data need to be suffle and it defines a new *stage*. e.g **reduce**,**join**.
+  - More partitions = more paralallel task
+  - Cluster will be under-utilized if there are too few partitions.
+
+  We can control how many partitions configuring the `spark.default.parallelism` property
+  ```scala
+  spark.default.parallelism 10
+  // Or in the numPartitions parameters
+  tuple.reduceByKey((x1,x2) => x1 + x2, 15)
+  ```
 
 I recommend you to see [this presentation](https://youtu.be/Wg2boMqLjCg) by *Vida Ha* and *Holden Karau*
-
-### Persist
-
-
+about *wide operations*.
 
 ### Runnings apps
 Spark applications run as independent sets of processes on a cluster, coordinated by the `SparkContext` object in your main program.
@@ -592,3 +624,22 @@ http://spark.apache.org/docs/1.6.3/submitting-applications.html#launching-applic
 http://spark.apache.org/docs/1.6.3/submitting-applications.html#master-urls
 http://spark.apache.org/docs/1.6.3/configuration.html#spark-configuration
 -->
+
+### Spark SQL
+
+As we said at the beginning of this [chapter](#starting-with-spark-shell), the main entry point
+for *spark apps* is a *sparkContext*, so in *spark SQL* is *sqlContext*.
+
+We have 2 options:
+- *SqlContext*
+  ```scala
+  import org.apache.apache.spark.SqlContext
+  val sqlC = new SQLContext(sc)
+  ```
+- *HiveContext* (support full HiveQL, but requires access to `hive-site.xml` by *Spark*)
+
+#### Creating a Dataframe
+
+#### Tranforming a Dataframe
+
+#### Rows
