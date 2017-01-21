@@ -487,7 +487,7 @@ If you want to begin with *Apache Spark*:
 Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API.
 You can see it in the image.
 
-<img src="/images/spark-shell.png" width="300">
+<img src="/images/spark-shell.png" width="400">
 
 
 If you want more information about `sparkContext` you can visit his [library](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.SparkContext)
@@ -517,7 +517,7 @@ To see the *transformations* and *action* concepts we would like to present
 an example of *create* a **RDD**. In our case, we use the [*Quixote*](/files/quixote.txt) intro to practice:
 ```scala
 // Load the file in Spark memory
-val text = sc.textFile("/home/exampleSpark/quixote.txt")
+val text = sc.textFile("~/Desktop/data/quixote.txt")
 // Transform the text to Uppercase
 val upperCase = text.map(x => x.upperCase)
 // Count the number of Rows in the RDD
@@ -533,17 +533,17 @@ has some additional functions in his [PairRDDFunctions](http://spark.apache.org/
 
 ```scala
 // Apply map function to convert the tex above into (word,1)
-val tuple = text1.flatMap(x => x.split(' ')).map(x => (_,1))
+val tuple = text.flatMap(x => x.split(' ')).map(x => (_,1))
 // Calculate the how many times the words are repeated
-val repeated = tuple.reduceByKey((x1,x2) => x1 + x2)
+val sumOfWords = tuple.reduceByKey((x1,x2) => x1 + x2)
 // See the tuples
-repeated.foreach(println)
+sumOfWords.foreach(println)
 ```
 Once you have seen some *maps* transformations, you could find interesting to  
 evaluate the *lineage* execution , we can use `.toDebugString` for that:
 
 ```scala
-scala> repeated.toDebugString
+scala> sumOfWords.toDebugString
 res21: String =
 (1) MapPartitionsRDD[33] at map at <console>:25 []
  |  ShuffledRDD[30] at reduceByKey at <console>:23 []
@@ -637,10 +637,77 @@ We have 2 options:
     import org.apache.apache.spark.SqlContext
     val sqlC = new SQLContext(sc)
     ```
+    :bulb: Visit the [API](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.SQLContext)
+    for more information
 - *HiveContext* (support full HiveQL, but requires access to `hive-site.xml` by *Spark*)
 
-#### Creating a Dataframe
+  :bulb: Visit the [API](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.hive.HiveContext)
+  for more information
 
+#### Creating a Dataframe
+To play with *Dataframe* we have put a [*json* dataset](/files/grades.json) in the root of  *Spark* folder that
+we have downloaded before and then:
+```scala
+val jsonData = sqlContext.read.json("grades.json")
+// Print first 3 records
+jsonData.show(3)
+```
+we will obtain:
+```bash
+scala> jsonData.show(3)
++---+----------+-----+-------+
+|_id|assignment|grade|student|
++---+----------+-----+-------+
+|  1|  homework|   45|   Mary|
+|  2|  homework|   48|  Alice|
+|  3|      quiz|   16|  Fiona|
++---+----------+-----+-------+
+only showing top 3 rows
+```
+:bulb: More information about how to create [*Dataframe*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.DataFrameReader)
 #### Tranforming a Dataframe
+Once our  *Dataframe* is created, we can play with it:
+```scala
+// Print the schema
+scala> jsonData.printSchema
+```
+The result will be:
+```bash
+root
+ |-- _id: long (nullable = true)
+ |-- assignment: string (nullable = true)
+ |-- grade: long (nullable = true)
+ |-- student: string (nullable = true)
+```
+
+```scala
+// Filter all the assigments as homework and grade greater than 50
+scala> jsonData.where(jsonData("assignment") === "homework" && jsonData("grade") > 50)
+```
+The result will be:
+```
++---+----------+-----+--------+
+|_id|assignment|grade| student|
++---+----------+-----+--------+
+|  5|  homework|   82|Samantha|
+|  9|  homework|   61|     Sam|
++---+----------+-----+--------+
+```
+:bulb: More information about how to work with [*Dataframes*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.DataFrame) and
+[*functions*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.functions$)
 
 #### Rows
+
+*Dataframes* are built on *RDD*, so we can work forward them using `.rdd`:
+```scala
+val jsonAsRdd = jsonData.rdd
+// Apply the same filter logic as in transformation point
+val result = jsonAsRdd.filter(x => ((x(1) == "homework") && (x.getLong(2) > 50)))
+```
+The result is the same:
+```
+scala> result.foreach(println)
+[5,homework,82,Samantha]
+[9,homework,61,Sam]
+```
+:bulb: More information about how to work with [*Row*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.Row)
