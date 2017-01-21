@@ -487,9 +487,6 @@ If you want to begin with *Apache Spark*:
 Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API.
 You can see it in the image.
 
-<img src="/images/spark-shell.png" width="400">
-
-
 If you want more information about `sparkContext` you can visit his [library](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.SparkContext)
 
 ### RDD
@@ -646,7 +643,7 @@ We have 2 options:
 
 #### Creating a Dataframe
 To play with *Dataframe* we have put a [*json* dataset](/files/grades.json) in the root of  *Spark* folder that
-we have downloaded before and then:
+we have downloaded before. Then:
 ```scala
 val jsonData = sqlContext.read.json("grades.json")
 // Print first 3 records
@@ -665,7 +662,7 @@ scala> jsonData.show(3)
 only showing top 3 rows
 ```
 :bulb: More information about how to create [*Dataframe*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.DataFrameReader)
-#### Tranforming a Dataframe
+#### Transform a Dataframe
 Once our  *Dataframe* is created, we can play with it:
 ```scala
 // Print the schema
@@ -680,6 +677,7 @@ root
  |-- student: string (nullable = true)
 ```
 
+Now, we want to filter some rows to find all the homeworks with a grade greater than 50:
 ```scala
 // Filter all the assigments as homework and grade greater than 50
 scala> jsonData.where(jsonData("assignment") === "homework" && jsonData("grade") > 50)
@@ -706,7 +704,6 @@ val result = jsonAsRdd.filter(x => ((x(1) == "homework") && (x.getLong(2) > 50))
 ```
 The result is the same:
 ```
-scala> result.foreach(println)
 [5,homework,82,Samantha]
 [9,homework,61,Sam]
 ```
