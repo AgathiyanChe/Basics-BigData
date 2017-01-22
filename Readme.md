@@ -1,5 +1,5 @@
 # Notes
-notes with basic command lines and some concepts.
+Notes with basic command lines and some concepts.
 
 **Table of Content**
 
@@ -16,6 +16,16 @@ notes with basic command lines and some concepts.
   - [Using Avro in Sqoop, Hive and Impala](#using-avro-in-sqoop-hive-and-impala)
   - [Using Parquet in Sqoop, Hive and Impala](#using-parquet-in-sqoop-hive-and-impala)
 5. [Flume](#flume)
+  - [Configuration](#configuration)
+6. [Spark](#spark)
+  - [Starting with Spark Shell](#starting-with-spark-shell)
+  - [RDD](#rdd)
+  - [Persistence](#persistence)
+  - [Jobs,Stage and Task](#jobs-stage-and-task)
+  - [Running Apps](#running-apps)
+  - [Spark SQL](#spark-sql)
+
+
 
 
 ## HDFS and YARN
@@ -463,3 +473,264 @@ agents1.sinks.s1.hdfs.roundValue = 10
 agents1.sinks.s1.hdfs.roundUnit = minute
 ```
 :bulb: More information about [Flume](https://flume.apache.org/FlumeUserGuide.html)
+
+## Spark
+
+### Starting with Spark Shell
+
+If you want to begin with *Apache Spark*:
+- Download the [package](http://d3kbcqa49mib13.cloudfront.net/spark-1.6.3-bin-hadoop2.6.tgz)
+- Move to the parent folder and run `./bin/spark-shell`
+
+Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API.
+You can see it in the image.
+
+![spark-shell](/images/spark-shell.png)
+
+If you want more information about `sparkContext` you can visit his [library](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.SparkContext)
+
+### RDD
+
+The basic *Spark* unit is the ***RDD***:
+- **R** esilient : If data is losed, it can be created again
+- **D** istributed : Compute across the cluster
+- **D** ataset : Data used to work with
+
+There are two ways to create RDDs: parallelizing an existing collection in your driver program,
+or referencing a dataset in an external storage system, such as a shared filesystem, HDFS, HBase,
+or any data source offering a Hadoop InputFormat.
+
+Remember that:
+- **RDD** are immutable
+- Data is partitioned across the cluster and it is done automatically by *Spark*, but you
+can control it.
+- Transform to `Sequence` to modify the data as needed
+
+And the RDD operations are divided in two blocks:
+- `Transformations` around the *pipelines*
+- `Actions` to return values
+
+To see the *transformations* and *action* concepts we would like to present
+an example of *create* a **RDD**. In our case, we use the [*Quixote*](/files/quixote.txt) intro to practice:
+```scala
+// Load the file in Spark memory
+val text = sc.textFile("~/Desktop/data/quixote.txt")
+// Transform the text to Uppercase
+val upperCase = text.map(x => x.upperCase)
+// Count the number of Rows in the RDD
+val resCount = upperCase.count
+```
+An important thing is that *Spark* is **lazy evaluation** that means that
+*transformations* are not calculated until an *action*.
+
+:bulb: If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD).
+
+Next point to mention are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
+has some additional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
+
+```scala
+// Apply map function to convert the tex above into (word,1)
+val tuple = text.flatMap(x => x.split(' ')).map(x => (_,1))
+// Calculate the how many times the words are repeated
+val sumOfWords = tuple.reduceByKey((x1,x2) => x1 + x2)
+// See the tuples
+sumOfWords.foreach(println)
+```
+Once you have seen some *maps* transformations, you could find interesting to  
+evaluate the *lineage* execution , we can use `.toDebugString` for that:
+
+```scala
+scala> sumOfWords.toDebugString
+res21: String =
+(1) MapPartitionsRDD[33] at map at <console>:25 []
+ |  ShuffledRDD[30] at reduceByKey at <console>:23 []
+ +-(1) MapPartitionsRDD[29] at map at <console>:23 []
+    |  MapPartitionsRDD[28] at flatMap at <console>:23 []
+    |  file:///home/training/Desktop/data/quixote.txt MapPartitionsRDD[11] at textFile at <console>:21 []
+    |  file:///home/training/Desktop/data/quixote.txt HadoopRDD[10] at textFile at <console>:21 []
+
+```
+Each *Spark transformation* create a new *child* RDD, and all the childs created depends of his
+parent. This is essential because every *action* will execute all the childs. Because of that, we
+present you the ***persistence*** concept.
+
+### Persistence
+
+***Persistence*** is the process to save the data in memory by default.
+
+When we are working in a distributed system, the data is partitioned across the cluster, and your
+persisted data will be saved in the *Executor JVMs*. If your partition persisted is not
+available, *Driver* starts a new task to recompute the partition in a different node, then the data
+is never lost.
+
+*Spark* has 3 Storage location options:
+
+- **MEMORY_ONLY**(default) : Same as *cache*
+- **MEMORY_AND_DISK** : Store partitions on disk if it not fit in memory
+- **DISK_ONLY** : Store all in disk
+
+```Scala
+import org.apache.spark.storage.StorageLevel
+// Persist data
+tuple.persist(StorageLevel.MEMORY_AND_DISK)
+// Unpersist data
+tuple.unpersist()
+```
+
+### Jobs, Stage and Task
+Once you have seen something about Spark, we show you 3 important concepts:
+
+| Concept     | Description     |
+| :------------- | :------------- |
+| *Job*      | A set of tasks executed as a result of an action |
+| *Stage*      | A set of task in a job |
+| *Task*        | Unit of work  |
+
+Depending of what kind of transformations are you using, you may have *skew* data, so be careful.
+The dependencies within RDD can be a problem, so keep in mind:
+- Narrow dependencies: No shuffle between Node. All transformations in workers. e.g **map**
+- Wide dependencies: data need to be suffle and it defines a new *stage*. e.g **reduce**,**join**.
+  - More partitions = more paralallel task
+  - Cluster will be under-utilized if there are too few partitions.
+
+  We can control how many partitions configuring the `spark.default.parallelism` property
+  ```scala
+  spark.default.parallelism 10
+  // Or in the numPartitions parameters
+  tuple.reduceByKey((x1,x2) => x1 + x2, 15)
+  ```
+
+I recommend you to see [this presentation](https://youtu.be/Wg2boMqLjCg) by *Vida Ha* and *Holden Karau*
+about *wide operations*.
+
+### Runnings apps
+Spark applications run as independent sets of processes on a cluster, coordinated by the `SparkContext` object in your main program.
+I recommend you to read some interesting concepts about Spark in cluster in the [Spark glossary](http://spark.apache.org/docs/1.6.3/cluster-overview.html#glossary). Some of them has been presented before.
+
+To launch a Spark Application, the `spark-submit` script is used for that.
+If your code depends on other projects, you will need to package them alongside your application in order to distribute the code to a Spark cluster.
+Both *sbt* and *Maven* have assembly plugins. When creating assembly jars, list Spark and Hadoop as provided dependencies; these need not be bundled since they are provided by the cluster manager at runtime.
+
+We have 3 ways to configure the *Spark* applications:
+- Set the parameters through the `SparkConf` within the *Spark* code
+- Set the arguments in the `Spark-submit`
+- Modify the *properties* file. By default it will take `conf/spark-default.conf`
+
+Use the `help` command to see all the *spark-submit* options:
+```Shell
+spark-submit --help
+```
+Spark has many parameters to tune depending of our needs, we are going to take a look some
+of the most common:
+- `--master MASTER_URL`
+
+| Option `MASTER_URL`| Decription     |
+| :------------- | :------------- |
+| `local`       | Run Spark locally with one worker thread (i.e. no parallelism at all)       |
+| `local[K]	` | Run Spark locally with K worker threads (ideally, set this to the number of cores on your machine)       |
+| `local[*]` | Run Spark locally with as many worker threads as logical cores on your machine      |
+| `yarn` | Connect to a YARN cluster in client or cluster mode depending on the value of --deploy-mode. The cluster location will be found based on the HADOOP_CONF_DIR or YARN_CONF_DIR variable |
+| `yarn-client	`| Equivalent to yarn with --deploy-mode client, which is preferred to `yarn-client`|
+| `yarn-cluster` | Equivalent to yarn with --deploy-mode cluster, which is preferred to `yarn-cluster` |
+- `--deploy-mode DEPLOY_MODE`: Whether to launch the driver program locally ("client") or on
+one of the worker machines inside the cluster ("cluster") (Default: client).
+- `--class CLASS_NAME` : Your application's main class (for Java / Scala apps).
+- `--name NAME`: A name of your application.
+- `--conf KEY=VALUE`: Arbitrary Spark configuration property
+- `--properties-file FILE` :Path to a file from which to load extra properties. If not specified,
+this will look for `conf/spark-defaults.conf`.
+- `--driver-memory MEM`:Memory for driver (e.g. 1000M, 2G) (Default: 1024M).
+- `--driver-java-options`: Extra Java options to pass to the driver.
+- `--driver-library-path`: Extra library path entries to pass to the driver.
+- `--driver-class-path`: Extra class path entries to pass to the driver.
+Note that jars added with --jars are automatically included in the classpath.
+- `--executor-memory MEM`:Memory per executor (e.g. 1000M, 2G) (Default: 1G).
+
+:bulb: More information abour [*Spark properties configuration*](http://spark.apache.org/docs/1.6.3/configuration.html#spark-configuration)
+
+### Spark SQL
+
+As we said at the beginning of this [chapter](#starting-with-spark-shell), the main entry point
+for *spark apps* is a *sparkContext*, so in *spark SQL* is *sqlContext*.
+
+We have 2 options:
+- *SqlContext*
+
+    ```scala
+    import org.apache.apache.spark.SqlContext
+    val sqlC = new SQLContext(sc)
+    ```
+    :bulb: Visit the [API](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.SQLContext)
+    for more information
+- *HiveContext* (support full HiveQL, but requires access to `hive-site.xml` by *Spark*)
+
+  :bulb: Visit the [API](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.hive.HiveContext)
+  for more information
+
+#### Creating a Dataframe
+To play with *Dataframe* we have put a [*json* dataset](/files/grades.json) in the root of  *Spark* folder that
+we have downloaded before. Then:
+```scala
+val jsonData = sqlContext.read.json("grades.json")
+// Print first 3 records
+jsonData.show(3)
+```
+we will obtain:
+```bash
+scala> jsonData.show(3)
++---+----------+-----+-------+
+|_id|assignment|grade|student|
++---+----------+-----+-------+
+|  1|  homework|   45|   Mary|
+|  2|  homework|   48|  Alice|
+|  3|      quiz|   16|  Fiona|
++---+----------+-----+-------+
+only showing top 3 rows
+```
+:bulb: More information about how to create [*Dataframe*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.DataFrameReader)
+#### Transform a Dataframe
+Once our  *Dataframe* is created, we can play with it:
+```scala
+// Print the schema
+scala> jsonData.printSchema
+```
+The result will be:
+```bash
+root
+ |-- _id: long (nullable = true)
+ |-- assignment: string (nullable = true)
+ |-- grade: long (nullable = true)
+ |-- student: string (nullable = true)
+```
+
+Now, we want to filter some rows to find all the homeworks with a grade greater than 50:
+```scala
+// Filter all the assigments as homework and grade greater than 50
+scala> jsonData.where(jsonData("assignment") === "homework" && jsonData("grade") > 50)
+```
+The result will be:
+```
++---+----------+-----+--------+
+|_id|assignment|grade| student|
++---+----------+-----+--------+
+|  5|  homework|   82|Samantha|
+|  9|  homework|   61|     Sam|
++---+----------+-----+--------+
+```
+:bulb: More information about how to work with [*Dataframes*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.DataFrame) and
+[*functions*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.functions$)
+
+#### Rows
+
+*Dataframes* are built on *RDD*, so we can work forward them using `.rdd`:
+```scala
+val jsonAsRdd = jsonData.rdd
+// Apply the same filter logic as in transformation point
+val result = jsonAsRdd.filter(x => ((x(1) == "homework") && (x.getLong(2) > 50)))
+```
+The result is the same:
+```
+[5,homework,82,Samantha]
+[9,homework,61,Sam]
+```
+:bulb: More information about how to work with [*Row*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.Row)
