@@ -340,7 +340,7 @@ Following the schema of the example:
 ```
 The *full name Schema* is defined as = `nameSpace` + `name`. In this case, `example.avro.User`  
 
-If you want to inspect Avro files, you can do it with *Avro Tools*.
+If you want to inspect Avro files, you can do it with [*Avro Tools*](http://apache.uvigo.es/avro/avro-1.8.1/java/avro-tools-1.8.1.jar).
 ```
 This product includes software developed at
 The Apache Software Foundation (http://www.apache.org/).
