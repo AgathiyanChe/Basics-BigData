@@ -1,5 +1,4 @@
 # Notes
-Notes with basic command lines and some concepts.
 
 **Table of Content**
 
@@ -244,7 +243,6 @@ INSERT OVERWRITE TABLE example_cities PARTITION(city) SELECT num_pers,city FROM 
 ```sql
 ALTER TABLE example_cities ADD PARTITION (city = 'Madrid')
 ```
-**Actions:**  
 1. Adds the partition to the table metadata
 2. Create a subdirectory
 ```
@@ -437,18 +435,18 @@ LOCATION '/folderExample/example_parquet';
 
 ![Flume-dataflow](/images/flume.png)
 
-An ***event*** is the *Flume* works unit and it is composed by:
+An ***event*** is the unit of work and it is composed by:
 - Body (payload)
 - Headers (metadata)
 
-The components of Flume architecture are:
-- Source: event reciever
-- Channel: Buffer
-- Sink: event deliver
+The components of *Flume*  architecture are:
+- **Source**: event reciever
+- **Channel**: Buffer
+- **Sink**: event deliver
 
 ### configuration
 
-Flume agent is configured through a java properties, we show an example:
+*Flume* agent is configured through a java properties, we show an example:
 ```properties
 # define components
 agents1.sources = s1
@@ -510,14 +508,22 @@ And the RDD operations are divided in two blocks:
 - `Transformations` around the *pipelines*
 - `Actions` to return values
 
-To see the *transformations* and *action* concepts we would like to present
+To see the ***transformations*** and ***action*** concepts we would like to present
 an example of *create* a **RDD**. In our case, we use the [*Quixote*](/files/quixote.txt) intro to practice:
 ```scala
 // Load the file in Spark memory
 val text = sc.textFile("~/Desktop/data/quixote.txt")
-// Transform the text to Uppercase
+```
+#### Transformation
+
+```scala
+// Transform the text to Uppercase (TRANSFORMATION)
 val upperCase = text.map(x => x.upperCase)
-// Count the number of Rows in the RDD
+```
+#### Action
+
+```scala
+// Count the number of Rows in the RDD (ACTION)
 val resCount = upperCase.count
 ```
 An important thing is that *Spark* is **lazy evaluation** that means that
@@ -525,7 +531,8 @@ An important thing is that *Spark* is **lazy evaluation** that means that
 
 :bulb: If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD).
 
-Next point to mention are *Pair RDD*. It will have `(key,value)` (*tuples*) structure, and it
+#### Pair RDD
+Next point to mention are ***Pair RDD***. It will have `(key,value)` (*tuples*) structure, and it
 has some additional functions in his [PairRDDFunctions](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) in the **API**
 
 ```scala
@@ -536,6 +543,8 @@ val sumOfWords = tuple.reduceByKey((x1,x2) => x1 + x2)
 // See the tuples
 sumOfWords.foreach(println)
 ```
+
+#### Lineage
 Once you have seen some *maps* transformations, you could find interesting to  
 evaluate the *lineage* execution , we can use `.toDebugString` for that:
 
