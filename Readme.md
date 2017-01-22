@@ -609,14 +609,14 @@ I recommend you to read some interesting concepts about Spark in cluster in the 
 
 To launch a Spark Application, the `spark-submit` script is used for that.
 If your code depends on other projects, you will need to package them alongside your application in order to distribute the code to a Spark cluster.
-Both *sbt and *Maven* have assembly plugins. When creating assembly jars, list Spark and Hadoop as provided dependencies; these need not be bundled since they are provided by the cluster manager at runtime.
+Both *sbt* and *Maven* have assembly plugins. When creating assembly jars, list Spark and Hadoop as provided dependencies; these need not be bundled since they are provided by the cluster manager at runtime.
 
-We can 3 ways to configure the *Spark* applications:
+We have 3 ways to configure the *Spark* applications:
 - Set the parameters through the `SparkConf` within the *Spark* code
 - Set the arguments in the `Spark-submit`
 - Modify the *properties* file. By default it will take `conf/spark-default.conf`
 
-Remember that if you need help, the `help` command will be there for that:
+Use the `help` command to see all the *spark-submit* options:
 ```Shell
 spark-submit --help
 ```
