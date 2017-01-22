@@ -482,8 +482,6 @@ If you want to begin with *Apache Spark*:
 - Download the [package](http://d3kbcqa49mib13.cloudfront.net/spark-1.6.3-bin-hadoop2.6.tgz)
 - Move to the parent folder and run `./bin/spark-shell`
 
-:mag_right: Use `:help` to see the help commands
-
 Every *Spark application* requires a `sparkContext`, it is the main entry point to the *Spark* API.
 You can see it in the image.
 
@@ -502,7 +500,7 @@ There are two ways to create RDDs: parallelizing an existing collection in your 
 or referencing a dataset in an external storage system, such as a shared filesystem, HDFS, HBase,
 or any data source offering a Hadoop InputFormat.
 
-Remenber that:
+Remember that:
 - **RDD** are immutable
 - Data is partitioned across the cluster and it is done automatically by *Spark*, but you
 can control it.
@@ -548,8 +546,8 @@ res21: String =
  |  ShuffledRDD[30] at reduceByKey at <console>:23 []
  +-(1) MapPartitionsRDD[29] at map at <console>:23 []
     |  MapPartitionsRDD[28] at flatMap at <console>:23 []
-    |  file:///home/training/Desktop/quixote.txt MapPartitionsRDD[11] at textFile at <console>:21 []
-    |  file:///home/training/Desktop/quixote.txt HadoopRDD[10] at textFile at <console>:21 []
+    |  file:///home/training/Desktop/data/quixote.txt MapPartitionsRDD[11] at textFile at <console>:21 []
+    |  file:///home/training/Desktop/data/quixote.txt HadoopRDD[10] at textFile at <console>:21 []
 
 ```
 Each *Spark transformation* create a new *child* RDD, and all the childs created depends of his
@@ -558,7 +556,7 @@ present you the ***persistence*** concept.
 
 ### Persistence
 
-***Persistence*** is the process to save the data in memory by default. Once the data is persisted
+***Persistence*** is the process to save the data in memory by default.
 
 When we are working in a distributed system, the data is partitioned across the cluster, and your
 persisted data will be saved in the *Executor JVMs*. If your partition persisted is not
@@ -570,6 +568,7 @@ is never lost.
 - **MEMORY_ONLY**(default) : Same as *cache*
 - **MEMORY_AND_DISK** : Store partitions on disk if it not fit in memory
 - **DISK_ONLY** : Store all in disk
+
 ```Scala
 import org.apache.spark.storage.StorageLevel
 // Persist data
@@ -606,23 +605,48 @@ about *wide operations*.
 
 ### Runnings apps
 Spark applications run as independent sets of processes on a cluster, coordinated by the `SparkContext` object in your main program.
-I recommend you to read some interesting concepts about Spark in cluster in the [Spark glossary](http://spark.apache.org/docs/1.6.3/cluster-overview.html#glossary)
+I recommend you to read some interesting concepts about Spark in cluster in the [Spark glossary](http://spark.apache.org/docs/1.6.3/cluster-overview.html#glossary). Some of them has been presented before.
 
 To launch a Spark Application, the `spark-submit` script is used for that.
 If your code depends on other projects, you will need to package them alongside your application in order to distribute the code to a Spark cluster.
-Both *sbt and *Maven* have assembly plugins. When creating assembly jars, list Spark and Hadoop as provided dependencies;
-these need not be bundled since they are provided by the cluster manager at runtime.
+Both *sbt and *Maven* have assembly plugins. When creating assembly jars, list Spark and Hadoop as provided dependencies; these need not be bundled since they are provided by the cluster manager at runtime.
 
-First of all, You can remember that if you need help, the `help` command will be there:
+We can 3 ways to configure the *Spark* applications:
+- Set the parameters through the `SparkConf` within the *Spark* code
+- Set the arguments in the `Spark-submit`
+- Modify the *properties* file. By default it will take `conf/spark-default.conf`
+
+Remember that if you need help, the `help` command will be there for that:
 ```Shell
 spark-submit --help
 ```
-Spark has many parameters to tune depending of our needs, we are going to take a look:
-<!--
-http://spark.apache.org/docs/1.6.3/submitting-applications.html#launching-applications-with-spark-submit
-http://spark.apache.org/docs/1.6.3/submitting-applications.html#master-urls
-http://spark.apache.org/docs/1.6.3/configuration.html#spark-configuration
--->
+Spark has many parameters to tune depending of our needs, we are going to take a look some
+of the most common:
+- `--master MASTER_URL`
+
+| Option `MASTER_URL`| Decription     |
+| :------------- | :------------- |
+| `local`       | Run Spark locally with one worker thread (i.e. no parallelism at all)       |
+| `local[K]	` | Run Spark locally with K worker threads (ideally, set this to the number of cores on your machine)       |
+| `local[*]` | Run Spark locally with as many worker threads as logical cores on your machine      |
+| `yarn` | Connect to a YARN cluster in client or cluster mode depending on the value of --deploy-mode. The cluster location will be found based on the HADOOP_CONF_DIR or YARN_CONF_DIR variable |
+| `yarn-client	`| Equivalent to yarn with --deploy-mode client, which is preferred to `yarn-client`|
+| `yarn-cluster` | Equivalent to yarn with --deploy-mode cluster, which is preferred to `yarn-cluster` |
+- `--deploy-mode DEPLOY_MODE`: Whether to launch the driver program locally ("client") or on
+one of the worker machines inside the cluster ("cluster") (Default: client).
+- `--class CLASS_NAME` : Your application's main class (for Java / Scala apps).
+- `--name NAME`: A name of your application.
+- `--conf KEY=VALUE`: Arbitrary Spark configuration property
+- `--properties-file FILE` :Path to a file from which to load extra properties. If not specified,
+this will look for `conf/spark-defaults.conf`.
+- `--driver-memory MEM`:Memory for driver (e.g. 1000M, 2G) (Default: 1024M).
+- `--driver-java-options`: Extra Java options to pass to the driver.
+- `--driver-library-path`: Extra library path entries to pass to the driver.
+- `--driver-class-path`: Extra class path entries to pass to the driver.
+Note that jars added with --jars are automatically included in the classpath.
+- `--executor-memory MEM`:Memory per executor (e.g. 1000M, 2G) (Default: 1G).
+
+:bulb: More information abour [*Spark properties configuration*](http://spark.apache.org/docs/1.6.3/configuration.html#spark-configuration)
 
 ### Spark SQL
 
