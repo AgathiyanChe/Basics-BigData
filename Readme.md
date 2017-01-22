@@ -655,6 +655,15 @@ this will look for `conf/spark-defaults.conf`.
 Note that jars added with --jars are automatically included in the classpath.
 - `--executor-memory MEM`:Memory per executor (e.g. 1000M, 2G) (Default: 1G).
 
+#### Example
+```
+./bin/spark-submit \
+  --class org.apache.spark.examples.SparkPi \
+  --master local[8] \
+  /path/to/examples.jar \
+  100
+```
+
 :bulb: More information abour [*Spark properties configuration*](http://spark.apache.org/docs/1.6.3/configuration.html#spark-configuration)
 
 ### Spark SQL
