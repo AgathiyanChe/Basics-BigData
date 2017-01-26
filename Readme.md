@@ -46,8 +46,6 @@ hdfs dfs -rm -R [-skipTrash]
 ```
 > :exclamation: Be careful with `-skipTrash` option because it will bypass trash, if enabled, and delete the specified file(s) immediately. This can be useful when it is necessary to delete files from an over-quota directory.
 
-:bulb: More information about HDFS click in this [**link**](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html#), or put `hdfs dfs` in command line.
-
 Yarn app list:
 ```
 yarn application -list
@@ -56,6 +54,7 @@ Yarn kill process:
 ```
 yarn application -kill <ApplicationID>
 ```
+>:bulb: More information about HDFS click in this [**link**](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html#).
 
 ## Sqoop
 Show all the sqoop options:
@@ -136,7 +135,7 @@ beeline -f myFileWithQueries.hql
 impala-shell -e 'SELECT * FROM users'
 ```
 
-:bulb: More information about the command options click in the [link](https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-BeelineCommandOptions)
+>:bulb: More information about the command options click in the [link](https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-BeelineCommandOptions)
 
 ### DDL
 
@@ -181,10 +180,10 @@ hdfs dfs -mv /tmp/people.txt /user/hive/warehouse/people/
 ```
 or
 ```sql
+-- This command moves the data just the command above
 LOAD DATA INPATH 'tmp/people.txt' INTO TABLE people
 ```
-> This command moves the data just the command above.
-:bulb: More information about [DML](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML#LanguageManualDML-HiveDataManipulationLanguage)
+>:bulb: More information about [DML](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML#LanguageManualDML-HiveDataManipulationLanguage)
 
 Remove all the data using the `OVERWRITE` as:
 ```sql
@@ -205,7 +204,7 @@ The metastore could be changed by *Hive*, *HDFS*, *HCatalog* or *Metastore Manag
 | Table schema modified or New data added to a table             | `REFRESH <table>`     |
 | Data in a table extensively altered, such as by HDFS balancing | `INVALIDATE METADATA <table>`  |
 
-:bulb: More information about the *DDL* options click in the [link](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL)
+>:bulb: More information about the *DDL* options click in the [link](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL)
 
 
 ### Partitioning
@@ -238,7 +237,8 @@ The data can be loaded in partitioned table through 2 ways:
 ```sql
 INSERT OVERWRITE TABLE example_cities PARTITION(city) SELECT num_pers,city FROM example;
 ```
-:bulb: More about [Dynamic partition configuration](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML#LanguageManualDML-DynamicPartitionInserts)
+>:bulb: More about [Dynamic partition configuration](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML#LanguageManualDML-DynamicPartitionInserts)
+
 #### Static
 ```sql
 ALTER TABLE example_cities ADD PARTITION (city = 'Madrid')
@@ -470,7 +470,7 @@ agents1.sinks.s1.hdfs.round = true
 agents1.sinks.s1.hdfs.roundValue = 10
 agents1.sinks.s1.hdfs.roundUnit = minute
 ```
-:bulb: More information about [Flume](https://flume.apache.org/FlumeUserGuide.html)
+>:bulb: More information about [Flume](https://flume.apache.org/FlumeUserGuide.html)
 
 ## Spark
 
@@ -485,7 +485,7 @@ You can see it in the image.
 
 ![spark-shell](/images/spark-shell.png)
 
-If you want more information about `sparkContext` you can visit his [library](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.SparkContext)
+>:bulb: More information about `sparkContext` you can visit the [API](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.SparkContext)
 
 ### RDD
 
@@ -529,7 +529,7 @@ val resCount = upperCase.count
 An important thing is that *Spark* is **lazy evaluation** that means that
 *transformations* are not calculated until an *action*.
 
-:bulb: If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD).
+>:bulb: If you want to now more about **RDD**, you can visit the [API documentation](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.rdd.RDD).
 
 #### Pair RDD
 Next point to mention are ***Pair RDD***. It will have `(key,value)` (*tuples*) structure, and it
@@ -669,7 +669,7 @@ I recommend you to :eyes::
 - [Tune Your Apache Spark Jobs (Part 1)](http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1/)
 - [Tune Your Apache Spark Jobs (Part 2)](http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-2/)
 
-:bulb: More information abour [*Spark properties configuration*](http://spark.apache.org/docs/1.6.3/configuration.html#spark-configuration)
+>:bulb: More information about [*Spark properties configuration*](http://spark.apache.org/docs/1.6.3/configuration.html#spark-configuration)
 
 
 ### Spark SQL
@@ -684,11 +684,12 @@ We have 2 options:
     import org.apache.apache.spark.SqlContext
     val sqlC = new SQLContext(sc)
     ```
-    :bulb: Visit the [API](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.SQLContext)
+    >:bulb: Visit the [API](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.SQLContext)
     for more information
+
 - *HiveContext* (support full HiveQL, but requires access to `hive-site.xml` by *Spark*)
 
-  :bulb: Visit the [API](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.hive.HiveContext)
+  >:bulb: Visit the [API](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.hive.HiveContext)
   for more information
 
 #### Creating a Dataframe
@@ -711,7 +712,8 @@ scala> jsonData.show(3)
 +---+----------+-----+-------+
 only showing top 3 rows
 ```
-:bulb: More information about how to create [*Dataframe*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.DataFrameReader)
+>:bulb: More information about how to create [*Dataframe*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.DataFrameReader)
+
 #### Transform a Dataframe
 Once our  *Dataframe* is created, we can play with it:
 ```scala
@@ -741,7 +743,7 @@ The result will be:
 |  9|  homework|   61|     Sam|
 +---+----------+-----+--------+
 ```
-:bulb: More information about how to work with [*Dataframes*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.DataFrame) and
+>:bulb: More information about how to work with [*Dataframes*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.DataFrame) and
 [*functions*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.functions$)
 
 #### Rows
@@ -757,4 +759,4 @@ The result is the same:
 [5,homework,82,Samantha]
 [9,homework,61,Sam]
 ```
-:bulb: More information about how to work with [*Row*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.Row)
+>:bulb: More information about how to work with [*Row*](http://spark.apache.org/docs/1.6.3/api/scala/index.html#org.apache.spark.sql.Row)
