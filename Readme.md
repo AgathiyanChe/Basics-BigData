@@ -610,7 +610,7 @@ The dependencies within RDD can be a problem, so keep in mind:
   ```
 
 I recommend you to :eyes::
- - [this Everyday I'm Shuffling](https://youtu.be/Wg2boMqLjCg) by *Vida Ha* and *Holden Karau*
+- [this Everyday I'm Shuffling](https://youtu.be/Wg2boMqLjCg) by *Vida Ha* and *Holden Karau*
  about *wide operations*.
 - [Top 5 Mistakes When Writing Spark Applications](https://www.youtube.com/watch?v=WyfHUNnMutg&t=1s).
 
@@ -657,10 +657,6 @@ this will look for `conf/spark-defaults.conf`.
 Note that jars added with --jars are automatically included in the classpath.
 - `--executor-memory MEM`:Memory per executor (e.g. 1000M, 2G) (Default: 1G).
 
-I recommend you to :eyes::
-- [Tune Your Apache Spark Jobs (Part 1)](http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1/)
-- [Tune Your Apache Spark Jobs (Part 2)](http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-2/)
-
 #### Example
 ```
 ./bin/spark-submit \
@@ -669,8 +665,12 @@ I recommend you to :eyes::
   /path/to/examples.jar \
   100
 ```
+I recommend you to :eyes::
+- [Tune Your Apache Spark Jobs (Part 1)](http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1/)
+- [Tune Your Apache Spark Jobs (Part 2)](http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-2/)
 
 :bulb: More information abour [*Spark properties configuration*](http://spark.apache.org/docs/1.6.3/configuration.html#spark-configuration)
+
 
 ### Spark SQL
 
