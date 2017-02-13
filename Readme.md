@@ -265,7 +265,8 @@ and the folder structure is:
 ```
 > :exclamation:  partition column is a virtual column, data is not stored in the field
 
-The data can be loaded in partitioned table through 2 ways:  
+The data can be loaded in partitioned table through 2 ways:
+
 1. Dynamic partitioning
 2. Static partitioning
 
