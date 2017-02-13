@@ -67,6 +67,7 @@ sqoop list-tables --connect jdbc:mysql://<dataBase> --username <name> --password
 ```
 > You can see that we are using a jdbc connection to MySQL dataBase
 
+### Import
 Import a database with Sqoop and put in a base directory:
 ```
 sqoop import-all-tables \
@@ -93,6 +94,40 @@ sqoop import --table <nameTable> \
 --check-column <columnId> \
 --last-value <valueId>
 ```
+> :bulb: More information about `sqoop import` click in this [link](http://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_literal_sqoop_import_literal)
+
+Import a table from RDBMS to Hive is possible as follow:
+```
+sqoop import \
+--connect jdbc:mysql://localhost/<databases> \
+--username <u> \
+--password <p> \
+--fields-terminated-by '\t' \
+--table <tableName> \
+--hive-import
+```
+or with Avro format:
+```
+sqoop import \
+--connectjdbc:mysql://localhost/<databases> \
+--username <u> \
+--password <p> \
+--table <sourceTable> \
+--target-dir /<directoryTable>/<outputTable> \
+--null-non-string '\\N' \
+--as-avrodatafile
+```
+### Export
+```
+sqoop export \
+--connectjdbc:mysql://localhost/<databases> \
+--username <u> \
+--password <p> \
+--export-dir /databas1/tableHDFS \
+--update-mode allowinsert \
+--table table
+```
+> :bulb: More information about `sqoop export` click in this [link](https://sqoop.apache.org/docs/1.4.2/SqoopUserGuide.html#_purpose_3)
 
 ## Hive and Impala
 
@@ -171,8 +206,11 @@ CREATE EXTERNAL TABLE people (id INT,name STRING,telephone INT) ROW FORMAT DELIM
 ```
 > Remember to use `Location` when a tables should be created in a specific directory
 
-If the user wants to explore the tables in the current database: `SHOW TABLES`. Sometimes users wants to see
-information about tables, users can use `DESCRIBE tableName` or `DESCRIBE FORMATTED tableName`.
+If you want to explore the tables, you have different options:
+- `SHOW TABLES`
+- `DESCRIBE`
+- `DESCRIBE FORMATTED`
+- `SHOW CREATE TABLE`
 
 Add data in tables uploading the info in the HDFS directory:
 ```bash
