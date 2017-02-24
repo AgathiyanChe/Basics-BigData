@@ -653,7 +653,7 @@ I recommend you to :eyes::
  about *wide operations*.
 - [Top 5 Mistakes When Writing Spark Applications](https://www.youtube.com/watch?v=WyfHUNnMutg&t=1s).
 
-### Runnings apps
+### Running apps
 Spark applications run as independent sets of processes on a cluster, coordinated by the `SparkContext` object in your main program.
 I recommend you to read some interesting concepts about Spark in cluster in the [Spark glossary](http://spark.apache.org/docs/1.6.3/cluster-overview.html#glossary). Some of them has been presented before.
 
