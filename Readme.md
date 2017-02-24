@@ -57,9 +57,25 @@ yarn application -kill <ApplicationID>
 >:bulb: More information about HDFS click in this [**link**](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html#).
 
 ## Sqoop
-Show all the sqoop options:
+Show all the sqoop options `sqoop help`:
 ```
-sqoop help
+Available commands:
+  codegen            Generate code to interact with database records
+  create-hive-table  Import a table definition into Hive
+  eval               Evaluate a SQL statement and display the results
+  export             Export an HDFS directory to a database table
+  help               List available commands
+  import             Import a table from a database to HDFS
+  import-all-tables  Import tables from a database to HDFS
+  import-mainframe   Import datasets from a mainframe server to HDFS
+  job                Work with saved jobs
+  list-databases     List available databases on a server
+  list-tables        List available tables in a database
+  merge              Merge results of incremental imports
+  metastore          Run a standalone Sqoop metastore
+  version            Display version information
+
+See 'sqoop help COMMAND' for information on a specific command.
 ```
 Show all the tables in a database:
 ```
@@ -67,14 +83,18 @@ sqoop list-tables --connect jdbc:mysql://<dataBase> --username <name> --password
 ```
 > You can see that we are using a jdbc connection to MySQL dataBase
 
-### Import
+### Imports
+Show all the `import` options as:
+```
+sqoop import --help
+```
 Import a database with Sqoop and put in a base directory:
 ```
 sqoop import-all-tables \
 --connect jdbc:mysql://dbhost/<dataBase> --username  <name> --password <password> \
 --warehouse-dir /<nameOfDirectory> \
 ```
-- You can use `--target-dir` to specify a directory.
+- You can use `--target-dir` to specify a directory in **HDFS**.
 - `--target-dir` is incompatible with `--warehouse-dir`
 
 Incremental import can be used by `lastmodified`:
@@ -94,7 +114,6 @@ sqoop import --table <nameTable> \
 --check-column <columnId> \
 --last-value <valueId>
 ```
-> :bulb: More information about `sqoop import` click in this [link](http://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_literal_sqoop_import_literal)
 
 Import a table from RDBMS to Hive is possible as follow:
 ```
@@ -117,6 +136,8 @@ sqoop import \
 --null-non-string '\\N' \
 --as-avrodatafile
 ```
+> :bulb: More information about `sqoop import` click in this [link](http://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_literal_sqoop_import_literal)
+
 ### Export
 ```
 sqoop export \
