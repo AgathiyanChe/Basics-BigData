@@ -56,6 +56,17 @@ yarn application -kill <ApplicationID>
 ```
 >:bulb: More information about HDFS click in this [**link**](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html#).
 
+Some interesting articles about **YARN**:
+
+- *Cloudera Series*:
+  1. [Cluster and Yarn basics](http://blog.cloudera.com/blog/2015/09/untangling-apache-hadoop-yarn-part-1/)
+  2. [Global configuration basics](http://blog.cloudera.com/blog/2015/10/untangling-apache-hadoop-yarn-part-2/)
+  3. [Scheduler concepts](http://blog.cloudera.com/blog/2016/01/untangling-apache-hadoop-yarn-part-3/)
+  4. [FairScheduler queue basics](http://blog.cloudera.com/blog/2016/06/untangling-apache-hadoop-yarn-part-4-fair-scheduler-queue-basics/)
+  5. [Using FairScheduler Queue properties](http://blog.cloudera.com/blog/2017/02/untangling-apache-hadoop-yarn-part-5-using-fairscheduler-queue-properties/)
+
+
+
 ## Sqoop
 Show all the sqoop options `sqoop help`:
 ```
